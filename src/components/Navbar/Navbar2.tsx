@@ -24,7 +24,7 @@ function Navbar({ className }: { className?: string }) {
       <div className="hidden lg:flex justify-between items-center gap-4 logo bg-[#000000a7] px-6 py-1 rounded-full">
         <HoveredLink href="/">
           <img
-            src="../../public/HealersHealthcareLogo.png"
+            src="/HealersHealthcareLogo.png"
             alt="Healers Healthcare"
             className="h-14"
           />

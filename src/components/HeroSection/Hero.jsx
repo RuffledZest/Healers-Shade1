@@ -318,7 +318,7 @@ const Hero = () => {
                         <div className="hidden sm:flex flex-row  items-center justify-center h-[20rem]  ">
                         
                         <img
-                            src="../../../public/HealersHealthcareLogo.png"
+                            src="/HealersHealthcareLogo.png"
                             alt="hero"
                             className="CompanyLogo object-cover"
                         />
