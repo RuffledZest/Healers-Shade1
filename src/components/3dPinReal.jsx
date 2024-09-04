@@ -34,7 +34,7 @@ export function AnimatedPinDemo() {
     ">
       
     <Link 
-    to = "/ehr"
+    to = "/health-records"
     >
 
       
