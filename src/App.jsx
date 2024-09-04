@@ -5,7 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom"
 
-
+import { ThemeProvider } from "../src/components/ThemeProvider/theme-provider"
 import LandingPage from "./pages/LandingPage/LandingPage";
 import Ehr from "./pages/EhrPage/EhrPage";
 import DoctorDashboard from "./pages/DoctorDashboard/DoctorDashboard";
@@ -22,7 +22,7 @@ function App() {
     },
     // other pages....
     {
-      path: "/ehr",
+      path: "/health-records",
       element: <Ehr />,
     },
     {
@@ -52,8 +52,11 @@ function App() {
 
   return (
     <div className="overflow-hidden">
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 
       <RouterProvider router={router} />
+      </ThemeProvider>
+
       
     </div>
   )

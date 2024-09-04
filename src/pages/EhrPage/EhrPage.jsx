@@ -1,10 +1,13 @@
+import Component1 from "../../components/EhrComponent1";
 
 
 
 function Ehr () {
   return (
     <div>
-      <h1>EHR</h1>
+      
+                
+      <Component1 />
     </div>
   );
 }

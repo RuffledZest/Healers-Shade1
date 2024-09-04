@@ -29,7 +29,7 @@ export const MenuItem = ({
     <div onMouseEnter={() => setActive(item)} className="relative ">
       <motion.p
         transition={{ duration: 0.3 }}
-        className="cursor-pointer text-white hover:opacity-[0.9] dark:text-white bg-black hover:bg-white hover:text-green-600 w-full h-full px-5 py-3 rounded-full"
+        className="cursor-pointer text-white hover:opacity-[0.9]  dark:text bg-black hover:border hover:border-[#7047eb] hover:text-[#7047eb] w-full h-full px-5 py-3 rounded-full"
       >
         {item}
       </motion.p>
@@ -76,7 +76,7 @@ export const Menu = ({
   return (
     <nav
       onMouseLeave={() => setActive(null)} // resets the state
-      className="relative rounded-full border border-transparent dark:bg-black dark:border-white/[0.2] shadow-input flex flex-col gap-2 lg:flex-row lg:gap-0 sm:justify-between items-center space-x-4 px-8 py-4 "
+      className="relative rounded-full border border-transparent shadow-input flex flex-col gap-2 lg:flex-row lg:gap-0 sm:justify-between items-center space-x-4 px-8 py-4 "
     >
       {children}
     </nav>
@@ -104,10 +104,10 @@ export const ProductItem = ({
         className="flex-shrink-0 rounded-md shadow-2xl"
       />
       <div>
-        <h4 className="text-xl font-bold mb-1 text-black dark:text-white">
+        <h4 className="text-xl font-bold mb-1  hover:text-[#7047eb] ">
           {title}
         </h4>
-        <p className="text-neutral-700 text-sm max-w-[10rem] dark:text-neutral-300">
+        <p className="text-neutral-700 text-sm max-w-[10rem] dark:text-neutral-300 hover:text-[#7047eb] hover:scale-95  hover:opacity-[0.6]">
           {description}
         </p>
       </div>

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { HoveredLink, Menu, MenuItem, ProductItem } from "../ui/navbar-menu";
 import { cn } from "../../lib/utils";
 import MetaMaskLogo from "../MetamaskLogo";
+import { ModeToggle } from "../mode-toggle";
 
 export function NavbarDemo() {
   return (
@@ -21,12 +22,12 @@ function Navbar({ className }: { className?: string }) {
     >
       <Menu setActive={setActive}>
       
-      <div className="hidden lg:flex justify-between items-center gap-4 logo bg-[#000000a7] px-6 py-1 rounded-full">
+      <div className="hidden lg:flex justify-between items-center gap-4 logo bg-[#000000] px-6 py-3 rounded-full">
         <HoveredLink href="/">
           <img
             src="/HealersHealthcareLogo.png"
             alt="Healers Healthcare"
-            className="h-14"
+            className="h-9 w-auto"
           />
         </HoveredLink>
           <div className="CompanyName hidden lg:flex flex-col">
@@ -35,7 +36,7 @@ function Navbar({ className }: { className?: string }) {
 
           </div>
       </div>
-      <div className="navbaritems bg-[#000000a7] flex py-2 px-2 rounded-full justify-between items-center gap-2 sm:gap-4 lg:gap-10">
+      <div className="navbaritems bg-[#000000] flex py-2 px-2 rounded-full justify-between items-center gap-2 sm:gap-4 lg:gap-10">
 
         <MenuItem setActive={setActive} active={active} item="Services">
           <div className="flex flex-col space-y-4 text-sm">
@@ -91,7 +92,8 @@ function Navbar({ className }: { className?: string }) {
           </div>
         </MenuItem>
       </div>
-      <div className="connectWalletSection bg-[#000000a7] flex justify-between items-center px-3 py-2 rounded-full gap-5" >
+      <div className="connectWalletSection bg-[#000000] flex justify-between items-center px-3 py-2 rounded-full gap-5" >
+        <ModeToggle />
       <MetaMaskLogo />   
 
         <button className=" relative inline-flex h-12 w-36 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 transform hover:-translate-y-1 transition duration-400">
