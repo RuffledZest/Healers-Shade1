@@ -18,7 +18,7 @@ import { Skeleton } from "./ui/skeleton"
 
 export default function DoctorRecord() {
   const [patients, setPatients] = useState([
-    { id: '12345678', name: 'John Doe', age: 35, gender: 'Male', date: '2024-06-01' },
+    // { id: '12345678', name: 'John Doe', age: 35, gender: 'Male', date: '2024-06-01' },
     // { id: '23456789', name: 'Jane Smith', age: 28, gender: 'Female', date: '2023-06-02' },
     { id: '45678901', name: 'Alice Brown', age: 31, gender: 'Female', date: '2024-06-04' },
     { id: '56789012', name: 'Charlie Davis', age: 45, gender: 'Male', date: '2024-06-05' },
@@ -185,10 +185,10 @@ export default function DoctorRecord() {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 p-6">
-        <h1 className="text-3xl font-bold mb-6 text-[#7047eb]">Doctor Dashboard</h1>
+      <div className="flex-1 p-8">
+        <h1 className="text-3xl font-bold mb-8 text-[#7047eb]">Patient Health Records</h1>
         
-        <section className="flex justify-between px-4 mx-5 items-center mb-1">
+        <section className="flex justify-between px-4 mx-5 items-center mb-6">
           <Select onValueChange={(value) => handleFilter('gender', value)}>
             <SelectTrigger className="w-[150px] bg-n-8 text-white border hover:border-[#7047eb] rounded-full">
               <SelectValue placeholder="Gender" />
