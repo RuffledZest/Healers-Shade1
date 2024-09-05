@@ -123,7 +123,7 @@ export default function Appointment() {
         
         <section className="flex justify-between px-4 mx-5 items-center mb-6">
           <Select onValueChange={(value) => handleFilter('status', value)}>
-            <SelectTrigger className="w-[200px] bg-n-8 text-white border hover:border-[#7047eb] rounded-full">
+            <SelectTrigger className="w-[200px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent className="bg-n-8 text-white border-gray-700">
@@ -154,7 +154,7 @@ export default function Appointment() {
 
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-full">
+              <Button className="bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
                 <Plus className="h-4 w-4 mr-2" />
                 New Appointment
               </Button>
@@ -230,7 +230,7 @@ export default function Appointment() {
                       <TableCell>{appointment.doctorName}</TableCell>
                       <TableCell>{appointment.time}</TableCell>
                       <TableCell className='border-transparent'>
-                        <span className={`px-2 py-1 rounded-full ${appointment.status === 'Done' ? 'bg-green-500' : 'bg-yellow-500'}`}>
+                        <span className={`px-2 py-1 rounded-lg ${appointment.status === 'Done' ? 'bg-green-500' : 'bg-yellow-500'}`}>
                           {appointment.status}
                         </span>
                       </TableCell>
@@ -246,7 +246,7 @@ export default function Appointment() {
           <div className="flex items-center space-x-2">
             <span>Show</span>
             <Select onValueChange={handleItemsPerPageChange} defaultValue="10">
-              <SelectTrigger className="w-[100px] bg-n-8 text-white border hover:border-[#7047eb] rounded-full">
+              <SelectTrigger className="w-[100px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-n-8 text-white border-gray-700">
@@ -266,7 +266,7 @@ export default function Appointment() {
                 simulateLoading()
               }}
               disabled={currentPage === 1 || isLoading}
-              className="bg-[#7047eb] hover:bg-[#5f3cc4] text-white rounded-full"
+              className="bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white rounded-lg"
             >
               <ChevronLeft className="h-4 w-4 mr-2" />
               Previous
@@ -278,7 +278,7 @@ export default function Appointment() {
                 simulateLoading()
               }}
               disabled={currentPage === totalPages || isLoading}
-              className="bg-[#7047eb] hover:bg-[#5f3cc4] text-white rounded-full"
+              className="bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white rounded-lg"
             >
               Next
               <ChevronRight className="h-4 w-4 ml-2" />

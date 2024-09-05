@@ -138,7 +138,7 @@ export default function DoctorRecord() {
         
         <section className="flex justify-between px-4 mx-5 items-center mb-6">
           <Select onValueChange={(value) => handleFilter('specialty', value)}>
-            <SelectTrigger className="w-[200px] bg-n-8 text-white border hover:border-[#7047eb] rounded-full">
+            <SelectTrigger className="w-[200px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
               <SelectValue placeholder="Specialty" />
             </SelectTrigger>
             <SelectContent className="bg-n-8 text-white border-gray-700">
@@ -174,7 +174,7 @@ export default function DoctorRecord() {
 
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-full">
+              <Button className="bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Doctor
               </Button>
@@ -312,7 +312,7 @@ export default function DoctorRecord() {
           <div className="flex items-center space-x-2">
             <span>Show</span>
             <Select onValueChange={handleItemsPerPageChange} defaultValue="10">
-              <SelectTrigger className="w-[100px] bg-n-8 text-white border hover:border-[#7047eb] rounded-full">
+              <SelectTrigger className="w-[100px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-n-8 text-white border-gray-700">
@@ -332,7 +332,7 @@ export default function DoctorRecord() {
                 simulateLoading()
               }}
               disabled={currentPage === 1 || isLoading}
-              className="bg-[#7047eb] hover:bg-[#5f3cc4] text-white rounded-full"
+              className="bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white rounded-lg"
             >
               <ChevronLeft className="h-4 w-4 mr-2" />
               Previous
@@ -344,7 +344,7 @@ export default function DoctorRecord() {
                 simulateLoading()
               }}
               disabled={currentPage === totalPages || isLoading}
-              className="bg-[#7047eb] hover:bg-[#5f3cc4] text-white rounded-full"
+              className="bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white rounded-lg"
             >
               Next
               <ChevronRight className="h-4 w-4 ml-2" />

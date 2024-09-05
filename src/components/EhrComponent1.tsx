@@ -30,6 +30,10 @@ export default function PatientHealthRecord() {
     { id: '12345678', name: 'Charlie' , age: 45, gender: 'Male', date: '2024-07-11' },
     { id: '23456789', name: 'Eva Wilson 2', age: 39, gender: 'Female', date: '2024-07-12' },
     { id: '34567890', name: 'Bob Johnson 3', age: 42, gender:'Male', date: '2024-06-13' },
+    { id: '01234577', name: 'Alice Brown', age: 31, gender: 'Female', date: '2024-07-10' },
+    { id: '12345608', name: 'Charlie' , age: 45, gender: 'Male', date: '2024-07-11' },
+    { id: '23455789', name: 'Eva Wilson 2', age: 39, gender: 'Female', date: '2024-07-12' },
+    { id: '34560890', name: 'Bob Johnson 3', age: 42, gender:'Male', date: '2024-06-13' },
   ])
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -188,9 +192,9 @@ export default function PatientHealthRecord() {
       <div className="flex-1 p-8">
         <h1 className="text-3xl font-bold mb-8 text-[#7047eb]">Patient Health Records</h1>
         
-        <section className="flex justify-between px-4 mx-5 items-center mb-6">
+        <section className="flex justify-between px-4 mx-5 items-center mb-2">
           <Select onValueChange={(value) => handleFilter('gender', value)}>
-            <SelectTrigger className="w-[150px] bg-n-8 text-white border hover:border-[#7047eb] rounded-full">
+            <SelectTrigger className="w-[150px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
               <SelectValue placeholder="Gender" />
             </SelectTrigger>
             <SelectContent className="bg-n-8 text-white border-gray-700">
@@ -205,7 +209,7 @@ export default function PatientHealthRecord() {
             <Search className="text-[#7047eb]" />
             <Input
               placeholder="Search by name or ID"
-              className="bg-n-8 text-white border-gray-700"
+              className="bg-transparent border hover:border-[#7047eb] text-white border-gray-700"
               onChange={(e) => handleFilter('search', e.target.value)}
             />
           </div>
@@ -249,12 +253,12 @@ export default function PatientHealthRecord() {
 
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-full">
+              <Button className="bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Patient
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-n-8/[.95] text-white border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="bg-black text-white border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="text-2xl font-bold text-[#7047eb] mb-4">Add New Patient</DialogTitle>
               </DialogHeader>
@@ -265,19 +269,19 @@ export default function PatientHealthRecord() {
                     <div className="space-y-3">
                       <div className="flex items-center space-x-2">
                         <User className="text-[#7047eb]" />
-                        <Input name="name" placeholder="Name" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                        <Input name="name" placeholder="Name" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                       </div>
                       <div className="flex items-center space-x-2">
                         <Calendar className="text-[#7047eb]" />
-                        <Input name="age" type="number" placeholder="Age" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                        <Input name="age" type="number" placeholder="Age" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                       </div>
                       <div className="flex items-center space-x-2">
                         <UserCog className="text-[#7047eb]" />
                         <Select name="gender">
-                          <SelectTrigger className="w-full bg-gray-800 text-white border-gray-700">
+                          <SelectTrigger className="w-full bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200">
                             <SelectValue placeholder="Select Gender" />
                           </SelectTrigger>
-                          <SelectContent className="bg-gray-800 text-white border-gray-700">
+                          <SelectContent className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200">
                             <SelectItem value="Male">Male</SelectItem>
                             <SelectItem value="Female">Female</SelectItem>
                             <SelectItem value="Other">Other</SelectItem>
@@ -286,15 +290,15 @@ export default function PatientHealthRecord() {
                       </div>
                       <div className="flex items-center space-x-2">
                         <MapPin className="text-[#7047eb]" />
-                        <Input name="location" placeholder="Location" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                        <Input name="location" placeholder="Location" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                       </div>
                       <div className="flex items-center space-x-2">
                         <Droplet className="text-[#7047eb]" />
                         <Select name="bloodGroup">
-                          <SelectTrigger className="w-full bg-gray-800 text-white border-gray-700">
+                          <SelectTrigger className="w-full bg-black text-white border-gray-700">
                             <SelectValue placeholder="Blood Group" />
                           </SelectTrigger>
-                          <SelectContent className="bg-gray-800 text-white border-gray-700">
+                          <SelectContent className="bg-black text-white border-gray-700">
                             {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(group => (
                               <SelectItem key={group} value={group}>{group}</SelectItem>
                             ))}
@@ -303,11 +307,11 @@ export default function PatientHealthRecord() {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Ruler className="text-[#7047eb]" />
-                        <Input name="height" type="number" placeholder="Height (in cms.)" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                        <Input name="height" type="number" placeholder="Height (in cms.)" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                       </div>
                       <div className="flex items-center space-x-2">
                         <Weight className="text-[#7047eb]" />
-                        <Input name="weight" type="number" placeholder="Weight (in kg.)" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                        <Input name="weight" type="number" placeholder="Weight (in kg.)" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                       </div>
                     </div>
                   </div>
@@ -319,23 +323,23 @@ export default function PatientHealthRecord() {
                         <div className="space-y-3">
                           <div className="flex items-center space-x-2">
                             <Pill className="text-[#7047eb]" />
-                            <Input name={`pharmacy${index}`} placeholder="Pharmacy" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`pharmacy${index}`} placeholder="Pharmacy" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                           <div className="flex items-center space-x-2">
                             <Stethoscope className="text-[#7047eb]" />
-                            <Input name={`physician${index}`} placeholder="Physician" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`physician${index}`} placeholder="Physician" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                           <div className="flex items-center space-x-2">
                             <Calendar className="text-[#7047eb]" />
-                            <Input name={`event${index}`} placeholder="Event" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`event${index}`} placeholder="Event" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                           <div className="flex items-center space-x-2">
                             <FileSymlink className="text-[#7047eb]" />
-                            <Input name={`prescription${index}`} placeholder="Prescription" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`prescription${index}`} placeholder="Prescription" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                           <div className="flex items-center space-x-2">
                             <Pill className="text-[#7047eb]" />
-                            <Input name={`remedies${index}`} placeholder="Remedies" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`remedies${index}`} placeholder="Remedies" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                         </div>
                         {index > 0 && (
@@ -359,23 +363,23 @@ export default function PatientHealthRecord() {
                         <div className="space-y-3">
                           <div className="flex items-center space-x-2">
                             <UserCog className="text-[#7047eb]" />
-                            <Input name={`doctor${index}`} placeholder="Doctor" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`doctor${index}`} placeholder="Doctor" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                           <div className="flex items-center space-x-2">
                             <FileSymlink className="text-[#7047eb]" />
-                            <Input name={`referredTo${index}`} placeholder="Referred to" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`referredTo${index}`} placeholder="Referred to" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                           <div className="flex items-center space-x-2">
                             <FileTextIcon className="text-[#7047eb]" />
-                            <Input name={`type${index}`} placeholder="Type" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`type${index}`} placeholder="Type" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                           <div className="flex items-center space-x-2">
                             <FileText className="text-[#7047eb]" />
-                            <Input name={`comments${index}`} placeholder="Comments" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`comments${index}`} placeholder="Comments" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                           <div className="flex items-center space-x-2">
                             <Upload className="text-[#7047eb]" />
-                            <Input name={`files${index}`} type="file" multiple className="flex-grow bg-gray-800 text-white border-gray-700" />
+                            <Input name={`files${index}`} type="file" multiple className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                           </div>
                         </div>
                         {index > 0 && (
@@ -395,7 +399,7 @@ export default function PatientHealthRecord() {
                   </div>
                 </div>
                 
-                <Button type="submit" className="w-full bg-[#7047eb] hover:bg-[#5f3cc4] text-white">
+                <Button type="submit" className="w-full border bg-[#7047eb] hover:bg-[#000] hover:border-[#7047eb] text-white">
                   Add Patient
                 </Button>
               </form>
@@ -483,19 +487,19 @@ export default function PatientHealthRecord() {
                 simulateLoading()
               }}
               disabled={currentPage === 1 || isLoading}
-              className="bg-[#7047eb] hover:bg-[#5f3cc4] text-white rounded-full"
+              className="bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white rounded-lg"
             >
               <ChevronLeft className="h-4 w-4 mr-2" />
               Previous
             </Button>
-            <span>Page {currentPage} of {totalPages}</span>
+            <span className='text-slate-400'>Page {currentPage} of {totalPages}</span>
             <Button 
               onClick={() => {
                 setCurrentPage(prev => Math.min(prev + 1, totalPages))
                 simulateLoading()
               }}
               disabled={currentPage === totalPages || isLoading}
-              className="bg-[#7047eb] hover:bg-[#5f3cc4] text-white rounded-full"
+              className="bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white rounded-lg"
             >
               Next
               <ChevronRight className="h-4 w-4 ml-2" />

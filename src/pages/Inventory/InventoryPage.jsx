@@ -1,9 +1,10 @@
+import Inventory1 from "../../components/InventoryComponent1";
 
 
 function InventoryPage() {
   return (
     <div>
-      <h1>Inventory Page</h1>
+    <Inventory1 />
     </div>
   );
 }
