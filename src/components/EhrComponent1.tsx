@@ -18,18 +18,18 @@ import { Skeleton } from "./ui/skeleton"
 
 export default function PatientHealthRecord() {
   const [patients, setPatients] = useState([
-    { id: '12345678', name: 'John Doe', age: 35, gender: 'Male', date: '2023-06-01' },
+    // { id: '12345678', name: 'John Doe', age: 35, gender: 'Male', date: '2024-06-01' },
     // { id: '23456789', name: 'Jane Smith', age: 28, gender: 'Female', date: '2023-06-02' },
-    { id: '45678901', name: 'Alice Brown', age: 31, gender: 'Female', date: '2023-06-04' },
-    { id: '56789012', name: 'Charlie Davis', age: 45, gender: 'Male', date: '2023-06-05' },
-    { id: '67890123', name: 'Eva Wilson', age: 39, gender: 'Female', date: '2023-06-06' },
-    { id: '78901234', name: 'John Doe 2', age: 35, gender: 'Female', date: '2023-06-07' },
-    { id: '89012345', name: 'Jane Smith', age: 28, gender: 'Female', date: '2023-06-08' },
-    { id: '90123456', name: 'Bob Johnson 2', age: 42, gender: 'Male', date: '2023-06-09' },
-    { id: '01234567', name: 'Alice Brown', age: 31, gender: 'Female', date: '2023-06-10' },
-    { id: '12345678', name: 'Charlie' , age: 45, gender: 'Male', date: '2023-06-11' },
-    { id: '23456789', name: 'Eva Wilson 2', age: 39, gender: 'Female', date: '2023-06-12' },
-    { id: '34567890', name: 'Bob Johnson 3', age: 42, gender:'Male', date: '2023-06-13' },
+    { id: '45678901', name: 'Alice Brown', age: 31, gender: 'Female', date: '2024-06-04' },
+    { id: '56789012', name: 'Charlie Davis', age: 45, gender: 'Male', date: '2024-06-05' },
+    { id: '67890123', name: 'Eva Wilson', age: 39, gender: 'Female', date: '2024-07-06' },
+    { id: '78901234', name: 'John Doe 2', age: 35, gender: 'Female', date: '2024-06-07' },
+    { id: '89012345', name: 'Jane Smith', age: 28, gender: 'Female', date: '2024-07-08' },
+    { id: '90123456', name: 'Bob Johnson 2', age: 42, gender: 'Male', date: '2024-06-09' },
+    { id: '01234567', name: 'Alice Brown', age: 31, gender: 'Female', date: '2024-07-10' },
+    { id: '12345678', name: 'Charlie' , age: 45, gender: 'Male', date: '2024-07-11' },
+    { id: '23456789', name: 'Eva Wilson 2', age: 39, gender: 'Female', date: '2024-07-12' },
+    { id: '34567890', name: 'Bob Johnson 3', age: 42, gender:'Male', date: '2024-06-13' },
   ])
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -163,8 +163,8 @@ export default function PatientHealthRecord() {
   return (
     <div className="flex min-h-screen bg-black text-white">
       {/* Sidebar */}
-      <div className="w-64 bg-n-8 p-6 space-y-8">
-        <h2 className="text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
+      <div className="w-24 md:w-60 lg:w-64 bg-n-8 p-1 md:p-6 space-y-8">
+        <h2 className="text-xs md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
         <nav className="space-y-4">
           {[
             { name: 'Health Records', icon: FileText },
@@ -177,8 +177,8 @@ export default function PatientHealthRecord() {
               to={`/${item.name.toLowerCase().replace(' ', '-')}`} 
               className="flex items-center p-3 rounded-lg hover:bg-[#7047eb] transition-colors duration-200"
             >
-              <item.icon className="h-5 w-5 mr-3" />
-              <span>{item.name}</span>
+              <item.icon className="h-5 w-5 md:mr-3" />
+              <span className='hidden md:block'>{item.name}</span>
             </Link>
           ))}
         </nav>
