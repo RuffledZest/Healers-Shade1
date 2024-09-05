@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useRef, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
@@ -14,8 +14,10 @@ import { Toaster } from "./ui/sonner"
 import { toast } from "sonner"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 import { Badge } from "./ui/badge"
-import { User, MapPin, Droplet, Ruler, Weight, FileText, Stethoscope, Calendar, FileSymlink, Pill, TrendingUp, Activity } from 'lucide-react'
+import { User, MapPin, Droplet, Ruler, Weight, FileText, Stethoscope, Calendar, FileSymlink, Pill, TrendingUp, Activity, Package, UserCog } from 'lucide-react'
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { MouseParallax, ScrollParallax } from "react-just-parallax"
+import { gradient } from '../assets'
 
 
 // Dummy data for charts
@@ -52,8 +54,8 @@ const patientData = {
     { id: 2, pharmacy: 'Central Drugs', physician: 'Dr. Johnson', event: 'Flu Treatment', prescription: 'Antibiotics', remedies: 'Rest' },
   ],
   testReports: [
-    { id: 1, doctor: 'Dr. Brown', referredTo: 'Lab A', type: 'Blood Test', date: '2024-01-15' },
-    { id: 2, doctor: 'Dr. Davis', referredTo: 'Lab B', type: 'X-Ray', date: '2024-02-20' },
+    { id: 1, doctor: 'Dr. Brown', referredTo: 'Lab A', type: 'Blood Test', date: '2024-01-15', testImage: '/sampleMedicalReport1.jpg' },
+    { id: 2, doctor: 'Dr. Davis', referredTo: 'Lab B', type: 'X-Ray', date: '2024-02-20', testImage: '/sampleMedicalReport2.jpg' },
   ],
 }
 
@@ -75,9 +77,36 @@ export default function PatientDetails() {
     const { name, value } = e.target
     setEditedData(prev => ({ ...prev, [name]: value }))
   }
+  const parallaxRef = useRef(null)
 
   return (
-    <div className="min-h-screen bg-black text-white p-8">
+    <div className='flex min-h-screen bg-black text-white'>
+        
+        
+    <div className="w-24 md:w-60 lg:w-64 bg-n-8 p-1 md:p-6 space-y-8">
+        <h2 className="text-xs md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
+        <nav className="space-y-4">
+          {[
+            { name: 'Health Records', icon: FileText },
+            { name: 'Doctor Dashboard', icon: UserCog },
+            { name: 'Appointments', icon: Calendar },
+            { name: 'Inventory', icon: Package },
+          ].map((item) => (
+            <Link 
+              key={item.name} 
+              to={`/${item.name.toLowerCase().replace(' ', '-')}`} 
+              className="flex items-center p-3 rounded-lg hover:bg-[#7047eb] transition-colors duration-200"
+            >
+              <item.icon className="h-5 w-5 md:mr-3" />
+              <span className='hidden md:block'>{item.name}</span>
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+
+    <div className="flex-1 min-h-screen bg-black text-white p-8">
+        
       <Toaster />
       <div className="mb-6 flex items-center text-sm text-gray-500">
         <a href="/health-records" className="hover:text-[#7047eb]">Health Records</a>
@@ -86,8 +115,10 @@ export default function PatientDetails() {
       </div>
 
       <div className="flex items-center gap-8 mb-8">
+        
         <Avatar className="w-24 h-24">
-          <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${editedData.name}`} />
+            <AvatarImage src={`/defaultProfilePhoto.jpg`} />
+          {/* <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${editedData.name}`} /> */}
           <AvatarFallback>{editedData.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
         </Avatar>
         <div>
@@ -119,9 +150,161 @@ export default function PatientDetails() {
         </div>
       </div>
 
-      <div className="relative mb-12">
+      <div className="relative  mb-12">
         <Separator className="absolute w-full" />
+        
         <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black" />
+      </div>
+      <div className="flex justify-between items-center mb-8">
+        
+        <h2 className="text-2xl font-bold">Patient Records</h2>
+        
+        <Drawer>
+            
+          <DrawerTrigger asChild>
+            <Button className=" border bg-[#7047eb] hover:bg-[#000] hover:border-[#7047eb] text-white">Edit Patient Details</Button>
+          </DrawerTrigger>
+          <DrawerContent className="bg-black text-white">
+            <DrawerHeader>
+              <DrawerTitle>Edit Patient Details</DrawerTitle>
+              <DrawerDescription>Make changes to patient information here.</DrawerDescription>
+            </DrawerHeader>
+            <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" name="name" value={editedData.name} onChange={handleInputChange} className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200 text-white" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="age">Age</Label>
+                <Input id="age" name="age" type="number" value={editedData.age} onChange={handleInputChange} className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200 text-white" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="gender">Gender</Label>
+                <Input id="gender" name="gender" value={editedData.gender} onChange={handleInputChange} className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200 text-white" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="bloodGroup">Blood Group</Label>
+                <Input id="bloodGroup" name="bloodGroup" value={editedData.bloodGroup} onChange={handleInputChange} className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200 text-white" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="height">Height (cm)</Label>
+                <Input id="height" name="height" type="number" value={editedData.height} onChange={handleInputChange} className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200 text-white" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="weight">Weight (kg)</Label>
+                <Input id="weight" name="weight" type="number" value={editedData.weight} onChange={handleInputChange} className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200 text-white" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="location">Location</Label>
+                <Input id="location" name="location" value={editedData.location} onChange={handleInputChange} className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200 text-white" />
+              </div>
+            </div>
+            <div className="p-4">
+                <div className='w-full flex justify-center items-center'>
+
+              <Button onClick={handleSave} className="w-[30vh] border bg-[#7047eb] hover:bg-[#000] hover:border-[#7047eb] hover:text-white ">Save Changes</Button>
+                </div>
+            </div>
+          </DrawerContent>
+        </Drawer>
+        
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 -mb-3">
+        
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="w-full bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white flex items-center justify-center gap-2">
+              <FileText className="text-[#7047eb]" />
+              Medical History
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-black text-white  border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Medical History</DialogTitle>
+              <DialogDescription>Patient's medical history records</DialogDescription>
+            </DialogHeader>
+            <ScrollArea className="h-[400px] pr-4">
+              {editedData.medicalHistory.map((history, index) => (
+                <div key={history.id} className="mb-4">
+                  <h4 className="font-semibold text-[#7047eb]">Medical Report {index + 1}</h4>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div className="flex items-center gap-2">
+                      <Pill className="text-[#7047eb]" />
+                      <span>{history.pharmacy}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Stethoscope className="text-[#7047eb]" />
+                      <span>{history.physician}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="text-[#7047eb]" />
+                      <span>{history.event}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FileSymlink className="text-[#7047eb]" />
+                      <span>{history.prescription}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Pill className="text-[#7047eb]" />
+                      <span>{history.remedies}</span>
+                    </div>
+                  </div>
+                  {index < editedData.medicalHistory.length - 1 && <Separator className="my-4" />}
+                </div>
+              ))}
+            </ScrollArea>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="w-full bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white flex items-center justify-center gap-2">
+              <FileText className="text-[#7047eb]" />
+              Test Reports
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-black text-white  border-gray-700 max-w-4xl max-h-[100vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Test Reports</DialogTitle>
+              <DialogDescription>Patient's test report records</DialogDescription>
+            </DialogHeader>
+            <ScrollArea className="h-[400px] pr-4">
+              {editedData.testReports.map((report, index) => (
+                <div key={report.id} className="mb-4">
+                  <h4 className="font-semibold text-[#7047eb]">Report {index + 1}</h4>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div className="flex items-center gap-2">
+                      <Stethoscope className="text-[#7047eb]" />
+                      <span>{report.doctor}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FileSymlink className="text-[#7047eb]" />
+                      <span>{report.referredTo}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FileText className="text-[#7047eb]" />
+                      <span>{report.type}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Calendar className="text-[#7047eb]" />
+                      <span>{report.date}</span>
+                    </div>
+                  </div>
+                  <img src={report.testImage} alt={`Test Report ${index + 1}`} className=" p-10 rounded-lg w-full h-full object-cover mt-2" />
+                  {index < editedData.testReports.length - 1 && <Separator className="my-4" />}
+                </div>
+              ))}
+            </ScrollArea>
+          </DialogContent>
+        </Dialog>
+        <MouseParallax ref={parallaxRef} className="relative z-10">
+            <div className="hidden sm:block inset-0 left-90 w-[56.625rem] opacity-10 mix-blend-color-dodge pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 w-[58.85rem] h-[58.85rem] -translate-x-3/4 -translate-y-1/2">
+                <img className="w-full" src={gradient} width={942} height={942} alt="" />
+              </div>
+            </div>
+          </MouseParallax>
       </div>
 
       <section className="mb-12">
@@ -178,141 +361,8 @@ export default function PatientDetails() {
         </div>
       </section>
 
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold">Patient Records</h2>
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button className="bg-[#7047eb] hover:bg-[#5f3cc4]">Edit Patient Details</Button>
-          </DrawerTrigger>
-          <DrawerContent className="bg-gray-900 text-white">
-            <DrawerHeader>
-              <DrawerTitle>Edit Patient Details</DrawerTitle>
-              <DrawerDescription>Make changes to patient information here.</DrawerDescription>
-            </DrawerHeader>
-            <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" name="name" value={editedData.name} onChange={handleInputChange} className="bg-gray-800 text-white" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="age">Age</Label>
-                <Input id="age" name="age" type="number" value={editedData.age} onChange={handleInputChange} className="bg-gray-800 text-white" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="gender">Gender</Label>
-                <Input id="gender" name="gender" value={editedData.gender} onChange={handleInputChange} className="bg-gray-800 text-white" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="bloodGroup">Blood Group</Label>
-                <Input id="bloodGroup" name="bloodGroup" value={editedData.bloodGroup} onChange={handleInputChange} className="bg-gray-800 text-white" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="height">Height (cm)</Label>
-                <Input id="height" name="height" type="number" value={editedData.height} onChange={handleInputChange} className="bg-gray-800 text-white" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="weight">Weight (kg)</Label>
-                <Input id="weight" name="weight" type="number" value={editedData.weight} onChange={handleInputChange} className="bg-gray-800 text-white" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
-                <Input id="location" name="location" value={editedData.location} onChange={handleInputChange} className="bg-gray-800 text-white" />
-              </div>
-            </div>
-            <div className="p-4">
-              <Button onClick={handleSave} className="w-full bg-[#7047eb] hover:bg-[#5f3cc4]">Save Changes</Button>
-            </div>
-          </DrawerContent>
-        </Drawer>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white flex items-center justify-center gap-2">
-              <FileText className="text-[#7047eb]" />
-              Medical History
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-gray-900 text-white">
-            <DialogHeader>
-              <DialogTitle>Medical History</DialogTitle>
-              <DialogDescription>Patient's medical history records</DialogDescription>
-            </DialogHeader>
-            <ScrollArea className="h-[400px] pr-4">
-              {editedData.medicalHistory.map((history, index) => (
-                <div key={history.id} className="mb-4">
-                  <h4 className="font-semibold text-[#7047eb]">Event {index + 1}</h4>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    <div className="flex items-center gap-2">
-                      <Pill className="text-[#7047eb]" />
-                      <span>{history.pharmacy}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Stethoscope className="text-[#7047eb]" />
-                      <span>{history.physician}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="text-[#7047eb]" />
-                      <span>{history.event}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FileSymlink className="text-[#7047eb]" />
-                      <span>{history.prescription}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Pill className="text-[#7047eb]" />
-                      <span>{history.remedies}</span>
-                    </div>
-                  </div>
-                  {index < editedData.medicalHistory.length - 1 && <Separator className="my-4" />}
-                </div>
-              ))}
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
-
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white flex items-center justify-center gap-2">
-              <FileText className="text-[#7047eb]" />
-              Test Reports
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-gray-900 text-white">
-            <DialogHeader>
-              <DialogTitle>Test Reports</DialogTitle>
-              <DialogDescription>Patient's test report records</DialogDescription>
-            </DialogHeader>
-            <ScrollArea className="h-[400px] pr-4">
-              {editedData.testReports.map((report, index) => (
-                <div key={report.id} className="mb-4">
-                  <h4 className="font-semibold text-[#7047eb]">Report {index + 1}</h4>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    <div className="flex items-center gap-2">
-                      <Stethoscope className="text-[#7047eb]" />
-                      <span>{report.doctor}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FileSymlink className="text-[#7047eb]" />
-                      <span>{report.referredTo}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FileText className="text-[#7047eb]" />
-                      <span>{report.type}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="text-[#7047eb]" />
-                      <span>{report.date}</span>
-                    </div>
-                  </div>
-                  {index < editedData.testReports.length - 1 && <Separator className="my-4" />}
-                </div>
-              ))}
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
-      </div>
+      
+    </div>
     </div>
   )
 }
