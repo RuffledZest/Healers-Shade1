@@ -14,92 +14,77 @@ import { MouseParallax } from "react-just-parallax"
 import { Skeleton } from "./ui/skeleton"
 import { gradient } from '../assets'
 
-const specialties = [
-  'NEUROSURGEON', 'UROLOGIST', 'ENT', 'GYNECOLOGIST', 'ORTHOPEDIC',
-  'PEDIATRICIAN', 'GEN.PHYSICIAN', 'COSMETIC & PLASTIC SURGEON'
-]
+const statuses = ['Pending', 'Done']
 
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
-export default function DoctorRecord() {
-  const [doctors, setDoctors] = useState([
-    { id: '12345678', name: 'Dr. John Doe', experience: 10, specialty: 'NEUROSURGEON', mobile: '1234567890', daysAvailable: ['Mon', 'Wed', 'Fri'], dutyStart: '09:00', dutyEnd: '17:00' },
-    { id: '23456789', name: 'Dr. Jane Smith', experience: 8, specialty: 'PEDIATRICIAN', mobile: '2345678901', daysAvailable: ['Tue', 'Thu', 'Sat'], dutyStart: '10:00', dutyEnd: '18:00' },
+export default function Appointment() {
+  const [appointments, setAppointments] = useState([
+    { id: 'APT001', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Pending' },
+    { id: 'APT002', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Done' },
     // Add more dummy data as needed
   ])
 
   const [currentPage, setCurrentPage] = useState(1)
   const [isOpen, setIsOpen] = useState(false)
-  const [filters, setFilters] = useState({ specialty: '', days: [], search: '' })
+  const [filters, setFilters] = useState({ status: '', time: '', search: '' })
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [isLoading, setIsLoading] = useState(false)
 
   const generateUniqueId = () => {
-    return Math.floor(10000000 + Math.random() * 90000000).toString()
+    return 'APT' + Math.floor(1000 + Math.random() * 9000).toString()
   }
 
-  const handleAddDoctor = useCallback((e: React.FormEvent<HTMLFormElement>) => {
+  const handleAddAppointment = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    const newDoctor = {
+    const newAppointment = {
       id: generateUniqueId(),
-      name: formData.get('name') as string,
-      experience: parseInt(formData.get('experience') as string) || 0,
-      specialty: formData.get('specialty') as string,
-      mobile: formData.get('mobile') as string,
-      daysAvailable: days.filter(day => formData.get(day) === 'on'),
-      dutyStart: formData.get('dutyStart') as string,
-      dutyEnd: formData.get('dutyEnd') as string,
+      patientName: formData.get('patientName') as string,
+      doctorName: formData.get('doctorName') as string,
+      time: formData.get('time') as string,
+      status: 'Pending',
     }
-    setDoctors(prevDoctors => [...prevDoctors, newDoctor])
+    setAppointments(prevAppointments => [...prevAppointments, newAppointment])
     setIsOpen(false)
   }, [])
 
   const handleFilter = useCallback((key: string, value: any) => {
-    setFilters(prev => {
-      if (key === 'days') {
-        const updatedDays = prev.days.includes(value)
-          ? prev.days.filter(day => day !== value)
-          : [...prev.days, value]
-        return { ...prev, [key]: updatedDays }
-      }
-      return { ...prev, [key]: value === 'all' ? '' : value }
-    })
+    setFilters(prev => ({ ...prev, [key]: value === 'all' ? '' : value }))
     setCurrentPage(1)
     simulateLoading()
   }, [])
 
-  const filteredDoctors = useMemo(() => {
-    return doctors.filter(doctor => {
-      const specialtyMatch = filters.specialty === '' || doctor.specialty === filters.specialty
-      const daysMatch = filters.days.length === 0 || filters.days.some(day => doctor.daysAvailable.includes(day))
+  const filteredAppointments = useMemo(() => {
+    return appointments.filter(appointment => {
+      const statusMatch = filters.status === '' || appointment.status === filters.status
+      const timeMatch = filters.time === '' || appointment.time.includes(filters.time)
       const searchMatch = filters.search === '' || 
-        doctor.name.toLowerCase().includes(filters.search.toLowerCase()) ||
-        doctor.id.includes(filters.search)
-      return specialtyMatch && daysMatch && searchMatch
+        appointment.patientName.toLowerCase().includes(filters.search.toLowerCase()) ||
+        appointment.doctorName.toLowerCase().includes(filters.search.toLowerCase()) ||
+        appointment.id.includes(filters.search)
+      return statusMatch && timeMatch && searchMatch
     })
-  }, [doctors, filters])
+  }, [appointments, filters])
 
-  const totalPages = Math.ceil(filteredDoctors.length / itemsPerPage)
+  const totalPages = Math.ceil(filteredAppointments.length / itemsPerPage)
 
   const handleItemsPerPageChange = useCallback((value: string) => {
-    setItemsPerPage(value === 'all' ? filteredDoctors.length : parseInt(value))
+    setItemsPerPage(value === 'all' ? filteredAppointments.length : parseInt(value))
     setCurrentPage(1)
     simulateLoading()
-  }, [filteredDoctors.length])
+  }, [filteredAppointments.length])
 
-  const paginatedDoctors = useMemo(() => {
-    return filteredDoctors.slice(
+  const paginatedAppointments = useMemo(() => {
+    return filteredAppointments.slice(
       (currentPage - 1) * itemsPerPage,
       currentPage * itemsPerPage
     )
-  }, [filteredDoctors, currentPage, itemsPerPage])
+  }, [filteredAppointments, currentPage, itemsPerPage])
 
   useEffect(() => {
-    if (paginatedDoctors.length === 0 && currentPage > 1) {
+    if (paginatedAppointments.length === 0 && currentPage > 1) {
       setCurrentPage(prev => prev - 1)
     }
-  }, [paginatedDoctors, currentPage])
+  }, [paginatedAppointments, currentPage])
 
   const parallaxRef = useRef(null)
 
@@ -134,39 +119,34 @@ export default function DoctorRecord() {
 
       {/* Main content */}
       <div className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-8 text-[#7047eb]">Doctor Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-8 text-[#7047eb]">Appointments</h1>
         
         <section className="flex justify-between px-4 mx-5 items-center mb-6">
-          <Select onValueChange={(value) => handleFilter('specialty', value)}>
+          <Select onValueChange={(value) => handleFilter('status', value)}>
             <SelectTrigger className="w-[200px] bg-n-8 text-white border hover:border-[#7047eb] rounded-full">
-              <SelectValue placeholder="Specialty" />
+              <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent className="bg-n-8 text-white border-gray-700">
-              <SelectItem value="all">All Specialties</SelectItem>
-              {specialties.map(specialty => (
-                <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
+              <SelectItem value="all">All Statuses</SelectItem>
+              {statuses.map(status => (
+                <SelectItem key={status} value={status}>{status}</SelectItem>
               ))}
             </SelectContent>
           </Select>
 
           <div className="flex items-center space-x-2">
-            <Label>Days:</Label>
-            {days.map(day => (
-              <div key={day} className="flex items-center">
-                <Checkbox
-                  id={day}
-                  checked={filters.days.includes(day)}
-                  onCheckedChange={() => handleFilter('days', day)}
-                />
-                <Label htmlFor={day} className="ml-1">{day}</Label>
-              </div>
-            ))}
+            <Label>Date:</Label>
+            <Input
+              type="date"
+              onChange={(e) => handleFilter('time', e.target.value)}
+              className="bg-n-8 text-white border-gray-700"
+            />
           </div>
 
           <div className="flex items-center space-x-2">
             <Search className="text-[#7047eb]" />
             <Input
-              placeholder="Search by name or ID"
+              placeholder="Search by patient, doctor or ID"
               className="bg-n-8 text-white border-gray-700"
               onChange={(e) => handleFilter('search', e.target.value)}
             />
@@ -176,76 +156,33 @@ export default function DoctorRecord() {
             <DialogTrigger asChild>
               <Button className="bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-full">
                 <Plus className="h-4 w-4 mr-2" />
-                Add Doctor
+                New Appointment
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-n-8/[.95] text-white border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-2xl font-bold text-[#7047eb] mb-4">Add New Doctor</DialogTitle>
+                <DialogTitle className="text-2xl font-bold text-[#7047eb] mb-4">Add New Appointment</DialogTitle>
               </DialogHeader>
-              <form onSubmit={handleAddDoctor} className="space-y-6">
+              <form onSubmit={handleAddAppointment} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-3">
                     <div className="flex items-center space-x-2">
                       <User className="text-[#7047eb]" />
-                      <Input name="name" placeholder="Name" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Briefcase className="text-[#7047eb]" />
-                      <Input name="experience" type="number" placeholder="Experience (years)" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                      <Input name="patientName" placeholder="Patient Name" className="flex-grow bg-gray-800 text-white border-gray-700" />
                     </div>
                     <div className="flex items-center space-x-2">
                       <UserCog className="text-[#7047eb]" />
-                      <Select name="specialty">
-                        <SelectTrigger className="w-full bg-gray-800 text-white border-gray-700">
-                          <SelectValue placeholder="Select Specialty" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 text-white border-gray-700">
-                          {specialties.map(specialty => (
-                            <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Phone className="text-[#7047eb]" />
-                      <Input name="mobile" placeholder="Mobile No." className="flex-grow bg-gray-800 text-white border-gray-700" />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <div>
-                      <Label className="text-[#7047eb] mb-2 block">Days Available</Label>
-                      <div className="grid grid-cols-3 gap-2">
-                        {days.map(day => (
-                          <div key={day} className="flex items-center">
-                            <Checkbox id={`day-${day}`} name={day} />
-                            <Label htmlFor={`day-${day}`} className="ml-2">{day}</Label>
-                          </div>
-                        ))}
-                      </div>
+                      <Input name="doctorName" placeholder="Doctor Name" className="flex-grow bg-gray-800 text-white border-gray-700" />
                     </div>
                     <div className="flex items-center space-x-2">
                       <Clock className="text-[#7047eb]" />
-                      <Input name="dutyStart" type="time" placeholder="Duty Start Time" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock className="text-[#7047eb]" />
-                      <Input name="dutyEnd" type="time" placeholder="Duty End Time" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Briefcase className="text-[#7047eb]" />
-                      <Input name="qualification" placeholder="Qualification" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <CalendarIcon className="text-[#7047eb]" />
-                      <Input name="opdFees" type="number" placeholder="OPD Fees" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                      <Input name="time" type="datetime-local" className="flex-grow bg-gray-800 text-white border-gray-700" />
                     </div>
                   </div>
                 </div>
                 
                 <Button type="submit" className="w-full bg-[#7047eb] hover:bg-[#5f3cc4] text-white">
-                  Add Doctor
+                  Add Appointment
                 </Button>
               </form>
             </DialogContent>
@@ -264,12 +201,11 @@ export default function DoctorRecord() {
             <Table>
               <TableHeader>
                 <TableRow className="border-r border-transparent rounded-lg">
-                  <TableHead className="text-[#7047eb] border-r">ID</TableHead>
-                  <TableHead className="text-[#7047eb] border-r">Name</TableHead>
-                  <TableHead className="text-[#7047eb] border-r">Specialty</TableHead>
-                  <TableHead className="text-[#7047eb] border-r">Days Available</TableHead>
-                  <TableHead className="text-[#7047eb] ">Duty Time</TableHead>
-                  {/* <TableHead className="text-[#7047eb]">Actions</TableHead> */}
+                  <TableHead className="text-[#7047eb] border-r">Appointment ID</TableHead>
+                  <TableHead className="text-[#7047eb] border-r">Patient</TableHead>
+                  <TableHead className="text-[#7047eb] border-r">Doctor</TableHead>
+                  <TableHead className="text-[#7047eb] border-r">Time</TableHead>
+                  <TableHead className="text-[#7047eb]">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -278,28 +214,26 @@ export default function DoctorRecord() {
                     <TableRow key={index}>
                       <TableCell><Skeleton className="h-4 w-20" /></TableCell>
                       <TableCell><Skeleton className="h-4 w-32" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                       <TableCell><Skeleton className="h-4 w-32" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-32" /></TableCell>
                       <TableCell><Skeleton className="h-4 w-24" /></TableCell>
                     </TableRow>
                   ))
                 ) : (
-                  paginatedDoctors.map((doctor) => (
+                  paginatedAppointments.map((appointment) => (
                     <TableRow 
-                      key={doctor.id} 
+                      key={appointment.id} 
                       className="border-b border-transparent hover:bg-[#7047eb20] transition-colors duration-200 rounded-lg"
                     >
-                      <TableCell>{doctor.id}</TableCell>
-                      <TableCell>{doctor.name}</TableCell>
-                      <TableCell>{doctor.specialty}</TableCell>
-                      <TableCell>{doctor.daysAvailable.join(', ')}</TableCell>
-                      <TableCell className='border-transparent'>{`${doctor.dutyStart} - ${doctor.dutyEnd}`}</TableCell>
-                      {/* <TableCell className='border-transparent'>
-                        <Link to={`/doctor/${doctor.id}`} className="text-[#7047eb] hover:underline">
-                          View Details
-                        </Link>
-                      </TableCell> */}
+                      <TableCell>{appointment.id}</TableCell>
+                      <TableCell>{appointment.patientName}</TableCell>
+                      <TableCell>{appointment.doctorName}</TableCell>
+                      <TableCell>{appointment.time}</TableCell>
+                      <TableCell className='border-transparent'>
+                        <span className={`px-2 py-1 rounded-full ${appointment.status === 'Done' ? 'bg-green-500' : 'bg-yellow-500'}`}>
+                          {appointment.status}
+                        </span>
+                      </TableCell>
                     </TableRow>
                   ))
                 )}
