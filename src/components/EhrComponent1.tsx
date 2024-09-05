@@ -1,89 +1,123 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { FileText, UserCog, Calendar, Package, Plus, ChevronLeft, ChevronRight, User, MapPin, Droplet, Ruler, Weight, Pill, Stethoscope, FileSymlink, FileText as FileTextIcon, Upload } from 'lucide-react'
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import { FileText, UserCog, Calendar, Package, Plus, ChevronLeft, ChevronRight, User, MapPin, Droplet, Ruler, Weight, Pill, Stethoscope, FileSymlink, FileText as FileTextIcon, Upload, Trash2, Search, CalendarIcon } from 'lucide-react'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Link } from 'react-router-dom'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Calendar1 } from "./ui/calendar"
+import { Label } from "./ui/label"
 import { gradient } from '../assets'
 import { MouseParallax, ScrollParallax } from "react-just-parallax"
+import { addDays, format, isWithinInterval } from "date-fns"
+import { DateRange } from "react-day-picker"
+import { cn } from "../lib/utils"
+import { Skeleton } from "./ui/skeleton"
 
 export default function PatientHealthRecord() {
   const [patients, setPatients] = useState([
     { id: '12345678', name: 'John Doe', age: 35, gender: 'Male', date: '2023-06-01' },
-    { id: '23456789', name: 'Jane Smith', age: 28, gender: 'Female', date: '2023-06-02' },
-    { id: '34567890', name: 'Bob Johnson', age: 42, gender: 'Male', date: '2023-06-03' },
+    // { id: '23456789', name: 'Jane Smith', age: 28, gender: 'Female', date: '2023-06-02' },
     { id: '45678901', name: 'Alice Brown', age: 31, gender: 'Female', date: '2023-06-04' },
     { id: '56789012', name: 'Charlie Davis', age: 45, gender: 'Male', date: '2023-06-05' },
     { id: '67890123', name: 'Eva Wilson', age: 39, gender: 'Female', date: '2023-06-06' },
-    
+    { id: '78901234', name: 'John Doe 2', age: 35, gender: 'Female', date: '2023-06-07' },
+    { id: '89012345', name: 'Jane Smith', age: 28, gender: 'Female', date: '2023-06-08' },
+    { id: '90123456', name: 'Bob Johnson 2', age: 42, gender: 'Male', date: '2023-06-09' },
+    { id: '01234567', name: 'Alice Brown', age: 31, gender: 'Female', date: '2023-06-10' },
+    { id: '12345678', name: 'Charlie' , age: 45, gender: 'Male', date: '2023-06-11' },
+    { id: '23456789', name: 'Eva Wilson 2', age: 39, gender: 'Female', date: '2023-06-12' },
+    { id: '34567890', name: 'Bob Johnson 3', age: 42, gender:'Male', date: '2023-06-13' },
   ])
 
   const [currentPage, setCurrentPage] = useState(1)
   const [isOpen, setIsOpen] = useState(false)
-  const [filters, setFilters] = useState({ gender: '', date: '' })
+  const [filters, setFilters] = useState({ gender: '', date: undefined as DateRange | undefined, search: '' })
   const [itemsPerPage, setItemsPerPage] = useState(10)
-  const [date, setDate] = React.useState(new Date())
+  const [medicalHistories, setMedicalHistories] = useState([{}])
+  const [testReports, setTestReports] = useState([{}])
+  const [isLoading, setIsLoading] = useState(false)
 
   const generateUniqueId = () => {
     return Math.floor(10000000 + Math.random() * 90000000).toString()
   }
 
-  const handleAddPatient = (e) => {
+  const handleAddPatient = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const formData = new FormData(e.target)
+    const formData = new FormData(e.currentTarget)
     const newPatient = {
       id: generateUniqueId(),
-      name: formData.get('name'),
-      age: parseInt(formData.get('age')),
-      gender: formData.get('gender'),
+      name: formData.get('name') as string,
+      age: parseInt(formData.get('age') as string) || 0,
+      gender: formData.get('gender') as string,
       date: new Date().toISOString().split('T')[0],
-      location: formData.get('location'),
-      bloodGroup: formData.get('bloodGroup'),
-      height: formData.get('height'),
-      weight: formData.get('weight'),
-      medicalHistory: {
-        pharmacy: formData.get('pharmacy'),
-        physician: formData.get('physician'),
-        event: formData.get('event'),
-        prescription: formData.get('prescription'),
-        remedies: formData.get('remedies'),
-      },
-      testReports: {
-        doctor: formData.get('doctor'),
-        referredTo: formData.get('referredTo'),
-        type: formData.get('type'),
-        comments: formData.get('comments'),
-        // File handling would typically be done separately
-      },
+      location: formData.get('location') as string,
+      bloodGroup: formData.get('bloodGroup') as string,
+      height: formData.get('height') as string,
+      weight: formData.get('weight') as string,
+      medicalHistories: medicalHistories.map((_, index) => ({
+        pharmacy: formData.get(`pharmacy${index}`) as string,
+        physician: formData.get(`physician${index}`) as string,
+        event: formData.get(`event${index}`) as string,
+        prescription: formData.get(`prescription${index}`) as string,
+        remedies: formData.get(`remedies${index}`) as string,
+      })),
+      testReports: testReports.map((_, index) => ({
+        doctor: formData.get(`doctor${index}`) as string,
+        referredTo: formData.get(`referredTo${index}`) as string,
+        type: formData.get(`type${index}`) as string,
+        comments: formData.get(`comments${index}`) as string,
+      })),
     }
-    setPatients([...patients, newPatient])
+    setPatients(prevPatients => [...prevPatients, newPatient])
     setIsOpen(false)
-  }
+    setMedicalHistories([{}])
+    setTestReports([{}])
+  }, [medicalHistories, testReports])
 
-  const handleFilter = (key, value) => {
+  const handleFilter = useCallback((key: string, value: any) => {
     setFilters(prev => ({ ...prev, [key]: value === 'all' ? '' : value }))
     setCurrentPage(1)
-  }
+    simulateLoading()
+  }, [])
 
-  const filteredPatients = patients.filter(patient => 
-    (filters.gender === '' || patient.gender === filters.gender) &&
-    (filters.date === '' || patient.date === filters.date)
-  )
+  const filteredPatients = useMemo(() => {
+    return patients.filter(patient => {
+      const genderMatch = filters.gender === '' || patient.gender === filters.gender
+      const searchMatch = filters.search === '' || 
+        patient.name.toLowerCase().includes(filters.search.toLowerCase()) ||
+        patient.id.includes(filters.search)
+      let dateMatch = true
+      if (filters.date?.from || filters.date?.to) {
+        const patientDate = new Date(patient.date)
+        if (filters.date.from && filters.date.to) {
+          dateMatch = isWithinInterval(patientDate, { start: filters.date.from, end: filters.date.to })
+        } else if (filters.date.from) {
+          dateMatch = patientDate >= filters.date.from
+        } else if (filters.date.to) {
+          dateMatch = patientDate <= filters.date.to
+        }
+      }
+      return genderMatch && dateMatch && searchMatch
+    })
+  }, [patients, filters])
 
   const totalPages = Math.ceil(filteredPatients.length / itemsPerPage)
 
-  const handleItemsPerPageChange = (value) => {
+  const handleItemsPerPageChange = useCallback((value: string) => {
     setItemsPerPage(value === 'all' ? filteredPatients.length : parseInt(value))
     setCurrentPage(1)
-  }
+    simulateLoading()
+  }, [filteredPatients.length])
 
-  const paginatedPatients = filteredPatients.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  )
+  const paginatedPatients = useMemo(() => {
+    return filteredPatients.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    )
+  }, [filteredPatients, currentPage, itemsPerPage])
 
   useEffect(() => {
     if (paginatedPatients.length === 0 && currentPage > 1) {
@@ -92,6 +126,39 @@ export default function PatientHealthRecord() {
   }, [paginatedPatients, currentPage])
 
   const parallaxRef = useRef(null)
+
+  const addMedicalHistory = useCallback(() => {
+    if (medicalHistories.length < 5) {
+      setMedicalHistories(prev => [...prev, {}])
+    }
+  }, [medicalHistories])
+
+  const removeMedicalHistory = useCallback((index: number) => {
+    setMedicalHistories(prev => {
+      const newHistories = [...prev]
+      newHistories.splice(index, 1)
+      return newHistories
+    })
+  }, [])
+
+  const addTestReport = useCallback(() => {
+    if (testReports.length < 5) {
+      setTestReports(prev => [...prev, {}])
+    }
+  }, [testReports])
+
+  const removeTestReport = useCallback((index: number) => {
+    setTestReports(prev => {
+      const newReports = [...prev]
+      newReports.splice(index, 1)
+      return newReports
+    })
+  }, [])
+
+  const simulateLoading = useCallback(() => {
+    setIsLoading(true)
+    setTimeout(() => setIsLoading(false), 1500)
+  }, [])
 
   return (
     <div className="flex min-h-screen bg-black text-white">
@@ -134,19 +201,51 @@ export default function PatientHealthRecord() {
             </SelectContent>
           </Select>
 
-          <Select onValueChange={(value) => handleFilter('date', value)}>
-            <SelectTrigger className="w-[150px] bg-n-8 text-white border hover:border-[#7047eb] rounded-full">
-              <SelectValue placeholder="Date" />
-            </SelectTrigger>
-            <SelectContent className="text-white border-gray-700">
+          <div className="flex items-center space-x-2">
+            <Search className="text-[#7047eb]" />
+            <Input
+              placeholder="Search by name or ID"
+              className="bg-n-8 text-white border-gray-700"
+              onChange={(e) => handleFilter('search', e.target.value)}
+            />
+          </div>
+
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                id="date"
+                variant={"outline"}
+                className={cn(
+                  "w-[300px] justify-start text-left font-normal",
+                  !filters.date && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {filters.date?.from ? (
+                  filters.date.to ? (
+                    <>
+                      {format(filters.date.from, "LLL dd, y")} -{" "}
+                      {format(filters.date.to, "LLL dd, y")}
+                    </>
+                  ) : (
+                    format(filters.date.from, "LLL dd, y")
+                  )
+                ) : (
+                  <span>Pick a date range</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
               <Calendar1
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                className="rounded-md border"
+                initialFocus
+                mode="range"
+                defaultMonth={filters.date?.from}
+                selected={filters.date}
+                onSelect={(newDate) => handleFilter('date', newDate)}
+                numberOfMonths={2}
               />
-            </SelectContent>
-          </Select>
+            </PopoverContent>
+          </Popover>
 
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
@@ -174,7 +273,7 @@ export default function PatientHealthRecord() {
                       </div>
                       <div className="flex items-center space-x-2">
                         <UserCog className="text-[#7047eb]" />
-                        <Select name="gender" className="flex-grow">
+                        <Select name="gender">
                           <SelectTrigger className="w-full bg-gray-800 text-white border-gray-700">
                             <SelectValue placeholder="Select Gender" />
                           </SelectTrigger>
@@ -191,7 +290,7 @@ export default function PatientHealthRecord() {
                       </div>
                       <div className="flex items-center space-x-2">
                         <Droplet className="text-[#7047eb]" />
-                        <Select name="bloodGroup" className="flex-grow">
+                        <Select name="bloodGroup">
                           <SelectTrigger className="w-full bg-gray-800 text-white border-gray-700">
                             <SelectValue placeholder="Blood Group" />
                           </SelectTrigger>
@@ -214,53 +313,85 @@ export default function PatientHealthRecord() {
                   </div>
                   
                   <div>
-                    <h3 className="text-lg font-semibold mb-3 text-[#7047eb]">Medical History</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-2">
-                        <Pill className="text-[#7047eb]" />
-                        <Input name="pharmacy" placeholder="Pharmacy" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                    {medicalHistories.map((_, index) => (
+                      <div key={index} className="mb-4">
+                        <h3 className="text-lg font-semibold mb-3 text-[#7047eb]">Medical History {index + 1}</h3>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <Pill className="text-[#7047eb]" />
+                            <Input name={`pharmacy${index}`} placeholder="Pharmacy" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Stethoscope className="text-[#7047eb]" />
+                            <Input name={`physician${index}`} placeholder="Physician" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Calendar className="text-[#7047eb]" />
+                            <Input name={`event${index}`} placeholder="Event" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <FileSymlink className="text-[#7047eb]" />
+                            <Input name={`prescription${index}`} placeholder="Prescription" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Pill className="text-[#7047eb]" />
+                            <Input name={`remedies${index}`} placeholder="Remedies" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                        </div>
+                        {index > 0 && (
+                          <Button type="button" onClick={() => removeMedicalHistory(index)} className="mt-2 bg-red-500 hover:bg-red-600">
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Remove Medical History
+                          </Button>
+                        )}
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Stethoscope className="text-[#7047eb]" />
-                        <Input name="physician" placeholder="Physician" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="text-[#7047eb]" />
-                        <Input name="event" placeholder="Event" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <FileSymlink className="text-[#7047eb]" />
-                        <Input name="prescription" placeholder="Prescription" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Pill className="text-[#7047eb]" />
-                        <Input name="remedies" placeholder="Remedies" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                      </div>
-                    </div>
+                    ))}
+                    {medicalHistories.length < 5 && (
+                      <Button type="button" onClick={addMedicalHistory} className="mt-2 bg-green-500 hover:bg-green-600">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Medical History
+                      </Button>
+                    )}
                     
-                    <h3 className="text-lg font-semibold mt-6 mb-3 text-[#7047eb]">Test Reports</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-2">
-                        <UserCog className="text-[#7047eb]" />
-                        <Input name="doctor" placeholder="Doctor" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                    {testReports.map((_, index) => (
+                      <div key={index} className="mt-6">
+                        <h3 className="text-lg font-semibold mb-3 text-[#7047eb]">Test Report {index + 1}</h3>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <UserCog className="text-[#7047eb]" />
+                            <Input name={`doctor${index}`} placeholder="Doctor" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <FileSymlink className="text-[#7047eb]" />
+                            <Input name={`referredTo${index}`} placeholder="Referred to" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <FileTextIcon className="text-[#7047eb]" />
+                            <Input name={`type${index}`} placeholder="Type" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <FileText className="text-[#7047eb]" />
+                            <Input name={`comments${index}`} placeholder="Comments" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Upload className="text-[#7047eb]" />
+                            <Input name={`files${index}`} type="file" multiple className="flex-grow bg-gray-800 text-white border-gray-700" />
+                          </div>
+                        </div>
+                        {index > 0 && (
+                          <Button type="button" onClick={() => removeTestReport(index)} className="mt-2 bg-red-500 hover:bg-red-600">
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Remove Test Report
+                          </Button>
+                        )}
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <FileSymlink className="text-[#7047eb]" />
-                        <Input name="referredTo" placeholder="Referred to" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <FileTextIcon className="text-[#7047eb]" />
-                        <Input name="type" placeholder="Type" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <FileText className="text-[#7047eb]" />
-                        <Input name="comments" placeholder="Comments" className="flex-grow bg-gray-800 text-white border-gray-700" />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Upload className="text-[#7047eb]" />
-                        <Input name="files" type="file" multiple className="flex-grow bg-gray-800 text-white border-gray-700" />
-                      </div>
-                    </div>
+                    ))}
+                    {testReports.length < 5 && (
+                      <Button type="button" onClick={addTestReport} className="mt-2 bg-green-500 hover:bg-green-600">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Test Report
+                      </Button>
+                    )}
                   </div>
                 </div>
                 
@@ -274,14 +405,13 @@ export default function PatientHealthRecord() {
 
         <div className='relative'>
           <MouseParallax ref={parallaxRef} className="relative z-10">
-            <div className="hidden sm:block inset-0 left-90 w-[56.625rem] opacity-10 mix-blen
-d-color-dodge pointer-events-none">
+            <div className="hidden sm:block inset-0 left-90 w-[56.625rem] opacity-10 mix-blend-color-dodge pointer-events-none">
               <div className="absolute top-1/2 left-1/2 w-[58.85rem] h-[58.85rem] -translate-x-3/4 -translate-y-1/2">
                 <img className="w-full" src={gradient} width={942} height={942} alt="" />
               </div>
             </div>
           </MouseParallax>
-          <div className="bg-n-8/[0.5] rounded-lg p-4 m-1  overflow-auto max-h-[calc(100vh-250px)] shadow-lg" style={{ scrollbarWidth: 'thin', scrollbarColor: '#7047eb65 #1f2937' }}>
+          <div className="bg-n-8/[0.5] rounded-lg p-4 m-1 overflow-auto max-h-[calc(100vh-250px)] shadow-lg" style={{ scrollbarWidth: 'thin', scrollbarColor: '#7047eb65 #1f2937' }}>
             <Table>
               <TableHeader>
                 <TableRow className="border-r border-transparent rounded-lg">
@@ -294,23 +424,36 @@ d-color-dodge pointer-events-none">
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedPatients.map((patient) => (
-                  <TableRow 
-                    key={patient.id} 
-                    className="border-b border-transparent hover:bg-[#7047eb20] transition-colors duration-200 rounded-lg"
-                  >
-                    <TableCell>{patient.id}</TableCell>
-                    <TableCell>{patient.name}</TableCell>
-                    <TableCell>{patient.age}</TableCell>
-                    <TableCell>{patient.gender}</TableCell>
-                    <TableCell>{patient.date}</TableCell>
-                    <TableCell className='border-transparent'>
-                      <Link to={`/patient/${patient.id}`} className="text-[#7047eb] hover:underline">
-                        View Details
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {isLoading ? (
+                  Array(itemsPerPage).fill(0).map((_, index) => (
+                    <TableRow key={index}>
+                      <TableCell><Skeleton className="h-4 w-20" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-32" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-8" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-16" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-24" /></TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  paginatedPatients.map((patient) => (
+                    <TableRow 
+                      key={patient.id} 
+                      className="border-b border-transparent hover:bg-[#7047eb20] transition-colors duration-200 rounded-lg"
+                    >
+                      <TableCell>{patient.id}</TableCell>
+                      <TableCell>{patient.name}</TableCell>
+                      <TableCell>{patient.age}</TableCell>
+                      <TableCell>{patient.gender}</TableCell>
+                      <TableCell>{patient.date}</TableCell>
+                      <TableCell className='border-transparent'>
+                        <Link to={`/patient/${patient.id}`} className="text-[#7047eb] hover:underline">
+                          View Details
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>
@@ -335,8 +478,11 @@ d-color-dodge pointer-events-none">
           </div>
           <div className="flex items-center space-x-2">
             <Button 
-              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
+              onClick={() => {
+                setCurrentPage(prev => Math.max(prev - 1, 1))
+                simulateLoading()
+              }}
+              disabled={currentPage === 1 || isLoading}
               className="bg-[#7047eb] hover:bg-[#5f3cc4] text-white rounded-full"
             >
               <ChevronLeft className="h-4 w-4 mr-2" />
@@ -344,8 +490,11 @@ d-color-dodge pointer-events-none">
             </Button>
             <span>Page {currentPage} of {totalPages}</span>
             <Button 
-              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-              disabled={currentPage === totalPages}
+              onClick={() => {
+                setCurrentPage(prev => Math.min(prev + 1, totalPages))
+                simulateLoading()
+              }}
+              disabled={currentPage === totalPages || isLoading}
               className="bg-[#7047eb] hover:bg-[#5f3cc4] text-white rounded-full"
             >
               Next
