@@ -11,6 +11,7 @@ import Ehr from "./pages/EhrPage/EhrPage";
 import DoctorDashboard from "./pages/DoctorDashboard/DoctorDashboard";
 import InventoryPage from "./pages/Inventory/InventoryPage";
 import Appointments from "./pages/Appointments/Appointments";
+import PatientDetails from "./components/PatientRecord1";
 
 
 function App() {
@@ -38,6 +39,10 @@ function App() {
     {
       path: "/appointments",
       element: <Appointments />,
+    },
+    {
+      path: "/patient/:id",
+      element: <PatientDetails />
     },
 
     {
