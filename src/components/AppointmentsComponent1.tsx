@@ -20,6 +20,15 @@ export default function Appointment() {
   const [appointments, setAppointments] = useState([
     { id: 'APT001', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Pending' },
     { id: 'APT002', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Done' },
+    //generate 10 more entries keep
+    { id: 'APT003', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Pending' },
+    { id: 'APT004', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Done' },
+    { id: 'APT005', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Done' },
+    { id: 'APT006', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Done' },
+    { id: 'APT007', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Done' },
+    { id: 'APT008', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Done' },
+    { id: 'APT009', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Pending' },
+    { id: 'APT010', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Pending' },
     // Add more dummy data as needed
   ])
 

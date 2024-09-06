@@ -5,7 +5,7 @@ import Heading from "../components/Heading/Heading"
 
 import {Link} from "react-router-dom";
 import Section from "./Section/Section";
-// import { gradient } from "../assets";
+import { gradient } from "../assets";
 
 export function AnimatedPinDemo() {
   return (
@@ -32,6 +32,11 @@ export function AnimatedPinDemo() {
     pl-10
     pr-10
     ">
+      <div className="absolute top-[70.25rem] left-[20.375rem] w-[56.625rem] opacity-90 mix-blend-color-dodge pointer-events-none">
+                            <div className="absolute top-1/2 left-1/2 w-[58.85rem] h-[58.85rem] -translate-x-3/4 -translate-y-1/2">
+                                <img className="w-full" src={gradient} width={942} height={942} alt="" />
+                            </div>
+                        </div>
       
     <Link 
     to = "/health-records"

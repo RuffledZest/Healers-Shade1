@@ -5,6 +5,7 @@ import { AnimatedPinDemo } from "./3dPinReal";
 import { HeroScrollDemo } from "./ScrollHero";
 import { BackgroundBoxesDemo } from "./BackgroundBoxes";
 import { motion } from "framer-motion";
+import { Features } from "./FeatureSection/Features2";
 
 export const CardSpotlightEffect1 = () => {
     const divRef = useRef<HTMLDivElement>(null);
@@ -28,7 +29,7 @@ export const CardSpotlightEffect1 = () => {
   
     const handleBlur = () => {
       setIsFocused(false);
-      setOpacity(0);
+      setOpacity(1);
     };
   
     const handleMouseEnter = () => {
@@ -36,7 +37,7 @@ export const CardSpotlightEffect1 = () => {
     };
   
     const handleMouseLeave = () => {
-      setOpacity(0);
+      setOpacity(1);
     };
   
     return (
@@ -52,17 +53,19 @@ export const CardSpotlightEffect1 = () => {
         
         <div
           
-          className="pointer-events-none absolute -inset-px opacity-0 transition ease-in duration-600"
+          className="pointer-events-none absolute -inset-px opacity-0 transition ease-in duration-600 -z-10"
           style={{
             opacity,
-            background: `radial-gradient(800px circle at ${position.x}px ${position.y}px, rgba(236,7,125,.5), transparent 40%)`,
+            background: `radial-gradient(800px circle at ${position.x}px ${position.y}px, rgba(157, 67, 171, 0.4), transparent 50%)`,
           }}
           
         />
-        <Roadmap />
+        {/* <Roadmap /> */}
+        <Features />
         <AnimatedPinDemo />
         <HeroScrollDemo />
         <BackgroundBoxesDemo/>
+
 
         
         

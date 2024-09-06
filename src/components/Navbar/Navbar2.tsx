@@ -36,7 +36,7 @@ function Navbar({ className }: { className?: string }) {
 
           </div>
       </div>
-      <div className="navbaritems bg-[#000000] flex py-2 px-2 rounded-full justify-between items-center gap-2 sm:gap-4 lg:gap-10">
+      <div className="navbaritems bg-[#000000] flex py-2 px-2 rounded-full justify-between items-center gap-x-0.5 sm:gap-4 lg:gap-10">
 
         <MenuItem setActive={setActive} active={active} item="Services">
           <div className="flex flex-col space-y-4 text-sm">

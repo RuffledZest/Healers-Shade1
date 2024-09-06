@@ -23,7 +23,7 @@ html {
 
         
         
-        /* @apply font-sans bg-[#ffffff] text-black text-base;  */
+        @apply font-sans bg-[#92c9d8] text-black text-base; 
         
         /*gradient background color with percentage and angle */
         /* @apply font-sans bg-gradient-to-br from-[#fdfdfd] via-[#13635e] to-[#000000] text-black text-base; */
@@ -57,7 +57,8 @@ html {
         --radius: 0.5rem;
     }
   .dark {
-        --background: 224 71.4% 4.1%;
+        /* --background: 0 0% 100%;  */
+        --background: 225 100% 0%;
         --foreground: 210 20% 98%;
         --card: 224 71.4% 4.1%;
         --card-foreground: 210 20% 98%;
