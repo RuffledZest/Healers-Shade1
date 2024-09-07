@@ -1,18 +1,18 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
-import { FileText, UserCog, Calendar, Package, Plus, ChevronLeft, ChevronRight, User, MapPin, Phone, Clock, Briefcase, Search, CalendarIcon } from 'lucide-react'
+import { FileText, UserCog, Calendar, Package, Plus, ChevronLeft, ChevronRight, User, Clock, Search, CalendarIcon, Menu } from 'lucide-react'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Link } from 'react-router-dom'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
-import { Checkbox } from "./ui/checkbox"
 import { Label } from "./ui/label"
 import { MouseParallax } from "react-just-parallax"
 import { Skeleton } from "./ui/skeleton"
 import { gradient } from '../assets'
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
 
 const statuses = ['Pending', 'Done']
 
@@ -20,7 +20,6 @@ export default function Appointment() {
   const [appointments, setAppointments] = useState([
     { id: 'APT001', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Pending' },
     { id: 'APT002', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Done' },
-    //generate 10 more entries keep
     { id: 'APT003', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Pending' },
     { id: 'APT004', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Done' },
     { id: 'APT005', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Done' },
@@ -29,7 +28,6 @@ export default function Appointment() {
     { id: 'APT008', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Done' },
     { id: 'APT009', patientName: 'John Doe', doctorName: 'Dr. Jane Smith', time: '2023-07-01 10:00', status: 'Pending' },
     { id: 'APT010', patientName: 'Alice Johnson', doctorName: 'Dr. Bob Brown', time: '2023-07-01 11:30', status: 'Pending' },
-    // Add more dummy data as needed
   ])
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -37,6 +35,7 @@ export default function Appointment() {
   const [filters, setFilters] = useState({ status: '', time: '', search: '' })
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [isLoading, setIsLoading] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const generateUniqueId = () => {
     return 'APT' + Math.floor(1000 + Math.random() * 9000).toString()
@@ -102,37 +101,59 @@ export default function Appointment() {
     setTimeout(() => setIsLoading(false), 1500)
   }, [])
 
-  return (
-    <div className="flex min-h-screen bg-black text-white">
-      {/* Sidebar */}
-      <div className="w-24 md:w-60 lg:w-64 bg-n-8 p-1 md:p-6 space-y-8">
-        <h2 className="text-xs md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
-        <nav className="space-y-4">
-          {[
-            { name: 'Health Records', icon: FileText },
-            { name: 'Doctor Dashboard', icon: UserCog },
-            { name: 'Appointments', icon: Calendar },
-            { name: 'Inventory', icon: Package },
-          ].map((item) => (
+  const SidebarContent = () => (
+    <>
+      <h2 className="text-xl md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
+      <nav className="space-y-2">
+        {[
+          { name: 'Health Records', icon: FileText },
+          { name: 'Doctor Dashboard', icon: UserCog },
+          { name: 'Appointments', icon: Calendar },
+          { name: 'Inventory', icon: Package },
+        ].map((item, index) => (
+          <React.Fragment key={item.name}>
             <Link 
-              key={item.name} 
               to={`/${item.name.toLowerCase().replace(' ', '-')}`} 
               className="flex items-center p-3 rounded-lg hover:bg-[#7047eb] transition-colors duration-200"
+              onClick={() => setIsSidebarOpen(false)}
             >
               <item.icon className="h-5 w-5 md:mr-3" />
-              <span className='hidden md:block'>{item.name}</span>
+              <span className='md:block'>{item.name}</span>
             </Link>
-          ))}
-        </nav>
+            {index < 3 && <div className="h-px bg-gray-700 my-2 mx-4" />}
+          </React.Fragment>
+        ))}
+      </nav>
+    </>
+  )
+
+  return (
+    <div className="flex flex-col md:flex-row min-h-screen bg-black text-white">
+      {/* Mobile Sidebar */}
+      <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" className="md:hidden fixed top-4 left-4 z-50">
+            <Menu className="h-6 w-6" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-[240px] bg-n-8 p-4 md:p-6">
+          <SidebarContent />
+        </SheetContent>
+      </Sheet>
+
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block w-64 bg-n-8 p-4 md:p-6 space-y-8">
+        <SidebarContent />
       </div>
 
       {/* Main content */}
-      <div className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-8 text-[#7047eb]">Appointments</h1>
+      <div className="flex-1 p-4 md:p-8 overflow-x-hidden">
+        <h1 className="text-4xl md:text-5xl text-center lg:text-left font-bold mb-4 text-white">Appointments</h1>
+        <p className="text-gray-400 text-center lg:text-left mb-8">Manage and view all scheduled appointments for patients and doctors.</p>
         
-        <section className="flex justify-between px-4 mx-5 items-center mb-6">
+        <section className="flex flex-wrap justify-between items-center mb-6 gap-4">
           <Select onValueChange={(value) => handleFilter('status', value)}>
-            <SelectTrigger className="w-[200px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
+            <SelectTrigger className="w-full md:w-[200px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent className="bg-n-8 text-white border-gray-700">
@@ -143,32 +164,32 @@ export default function Appointment() {
             </SelectContent>
           </Select>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 w-full md:w-auto">
             <Label>Date:</Label>
             <Input
               type="date"
               onChange={(e) => handleFilter('time', e.target.value)}
-              className="bg-n-8 text-white border-gray-700"
+              className="bg-transparent border hover:border-[#7047eb] text-white"
             />
           </div>
 
-          <div className="flex items-center space-x-2">
-            <Search className="text-[#7047eb]" />
+          <div className="flex items-center space-x-2 w-full md:w-auto">
+            <Search className="hidden sm:block text-[#7047eb]" />
             <Input
               placeholder="Search by patient, doctor or ID"
-              className="bg-n-8 text-white border-gray-700"
+              className="w-full md:w-auto bg-transparent border hover:border-[#7047eb] text-white"
               onChange={(e) => handleFilter('search', e.target.value)}
             />
           </div>
 
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
+              <Button className="w-full md:w-auto bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
                 <Plus className="h-4 w-4 mr-2" />
                 New Appointment
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-n-8/[.95] text-white border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="bg-black text-white border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="text-2xl font-bold text-[#7047eb] mb-4">Add New Appointment</DialogTitle>
               </DialogHeader>
@@ -177,20 +198,20 @@ export default function Appointment() {
                   <div className="space-y-3">
                     <div className="flex items-center space-x-2">
                       <User className="text-[#7047eb]" />
-                      <Input name="patientName" placeholder="Patient Name" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                      <Input name="patientName" placeholder="Patient Name" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                     </div>
                     <div className="flex items-center space-x-2">
                       <UserCog className="text-[#7047eb]" />
-                      <Input name="doctorName" placeholder="Doctor Name" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                      <Input name="doctorName" placeholder="Doctor Name" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                     </div>
                     <div className="flex items-center space-x-2">
                       <Clock className="text-[#7047eb]" />
-                      <Input name="time" type="datetime-local" className="flex-grow bg-gray-800 text-white border-gray-700" />
+                      <Input name="time" type="datetime-local" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
                     </div>
                   </div>
                 </div>
                 
-                <Button type="submit" className="w-full bg-[#7047eb] hover:bg-[#5f3cc4] text-white">
+                <Button type="submit" className="w-full border bg-[#7047eb] hover:bg-[#000] hover:border-[#7047eb] text-white">
                   Add Appointment
                 </Button>
               </form>
@@ -199,14 +220,14 @@ export default function Appointment() {
         </section>
 
         <div className='relative'>
-        <MouseParallax ref={parallaxRef} className="relative z-10">
+          <MouseParallax ref={parallaxRef} className="relative z-10">
             <div className="hidden sm:block inset-0 left-90 w-[56.625rem] opacity-10 mix-blend-color-dodge pointer-events-none">
               <div className="absolute top-1/2 left-1/2 w-[58.85rem] h-[58.85rem] -translate-x-3/4 -translate-y-1/2">
                 <img className="w-full" src={gradient} width={942} height={942} alt="" />
               </div>
             </div>
           </MouseParallax>
-          <div className="bg-n-8/[0.5] rounded-lg p-4 m-1 overflow-auto max-h-[calc(100vh-250px)] shadow-lg" style={{ scrollbarWidth: 'thin', scrollbarColor: '#7047eb65 #1f2937' }}>
+          <div className="bg-n-8/[0.5] rounded-lg p-4 overflow-x-auto shadow-lg">
             <Table>
               <TableHeader>
                 <TableRow className="border-r border-transparent rounded-lg">
@@ -251,11 +272,11 @@ export default function Appointment() {
           </div>
         </div>
 
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex flex-col md:flex-row justify-between items-center mt-4 gap-4">
           <div className="flex items-center space-x-2">
             <span>Show</span>
             <Select onValueChange={handleItemsPerPageChange} defaultValue="10">
-              <SelectTrigger className="w-[100px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
+              <SelectTrigger className="w-[100px] bg-n-8 text-white border hover:border-[#7047eb] rounded-full">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-n-8 text-white border-gray-700">
@@ -280,7 +301,7 @@ export default function Appointment() {
               <ChevronLeft className="h-4 w-4 mr-2" />
               Previous
             </Button>
-            <span>Page {currentPage} of {totalPages}</span>
+            <span className='text-slate-400'>Page {currentPage} of {totalPages}</span>
             <Button 
               onClick={() => {
                 setCurrentPage(prev => Math.min(prev + 1, totalPages))
