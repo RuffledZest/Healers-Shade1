@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
-import { FileText, UserCog, Calendar, Package, Plus, ChevronLeft, ChevronRight, User, MapPin, Droplet, Ruler, Weight, Pill, Stethoscope, FileSymlink, FileText as FileTextIcon, Upload, Trash2, Search, CalendarIcon } from 'lucide-react'
+import { FileText, UserCog, Calendar, Package, Plus, ChevronLeft, ChevronRight, User, MapPin, Droplet, Ruler, Weight, Pill, Stethoscope, FileSymlink, FileText as FileTextIcon, Upload, Trash2, Search, CalendarIcon, Menu } from 'lucide-react'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Link } from 'react-router-dom'
@@ -17,6 +17,7 @@ import { addDays, format, isWithinInterval } from "date-fns"
 import { DateRange } from "react-day-picker"
 import { cn } from "../lib/utils"
 import { Skeleton } from "./ui/skeleton"
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
 
 export default function PatientHealthRecord() {
   const [patients, setPatients] = useState([
@@ -43,6 +44,7 @@ export default function PatientHealthRecord() {
   const [medicalHistories, setMedicalHistories] = useState([{}])
   const [testReports, setTestReports] = useState([{}])
   const [isLoading, setIsLoading] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   const generateUniqueId = () => {
     return Math.floor(10000000 + Math.random() * 90000000).toString()
@@ -164,36 +166,55 @@ export default function PatientHealthRecord() {
     setTimeout(() => setIsLoading(false), 1500)
   }, [])
 
+  const SidebarContent = () => (
+    <>
+      <h2 className="text-xl md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
+      <nav className="space-y-2">
+        {[
+          { name: 'Health Records', icon: FileText },
+          { name: 'Doctor Dashboard', icon: UserCog },
+          { name: 'Appointments', icon: Calendar },
+          { name: 'Inventory', icon: Package },
+        ].map((item, index) => (
+          <React.Fragment key={item.name}>
+            <Link 
+              to={`/${item.name.toLowerCase().replace(' ', '-')}`} 
+              className="flex items-center p-3 rounded-lg hover:bg-[#7047eb] transition-colors duration-200"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <item.icon className="h-5 w-5 md:mr-3" />
+              <span className='md:block'>{item.name}</span>
+            </Link>
+            {index < 3 && <div className="h-px bg-gray-700 my-2 mx-4" />}
+          </React.Fragment>
+        ))}
+      </nav>
+    </>
+  )
+
   return (
-    <div className="flex  flex-row min-h-screen bg-black text-white">
-      {/* Sidebar */}
-      <div className="w-30 md:w-24 lg:w-64 bg-n-8 p-4 md:p-6 space-y-8">
-        <h2 className="text-sm md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
-        <nav className="space-y-2">
-          {[
-            { name: 'Health Records', icon: FileText },
-            { name: 'Doctor Dashboard', icon: UserCog },
-            { name: 'Appointments', icon: Calendar },
-            { name: 'Inventory', icon: Package },
-          ].map((item, index) => (
-            <React.Fragment key={item.name}>
-              <Link 
-                to={`/${item.name.toLowerCase().replace(' ', '-')}`} 
-                className="flex items-center p-3 rounded-lg hover:bg-[#7047eb] transition-colors duration-200"
-              >
-                <item.icon className="h-5 w-5 md:mr-3" />
-                <span className='hidden md:block'>{item.name}</span>
-              </Link>
-              {index < 3 && <div className="h-px bg-gray-700 my-2 mx-4" />}
-            </React.Fragment>
-          ))}
-        </nav>
+    <div className="flex flex-col md:flex-row min-h-screen bg-black text-white">
+      {/* Mobile Sidebar */}
+      <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" className="md:hidden fixed top-4 left-4 z-50">
+            <Menu className="h-6 w-6" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-[240px] bg-n-8 p-4 md:p-6">
+          <SidebarContent />
+        </SheetContent>
+      </Sheet>
+
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block w-64 bg-n-8 p-4 md:p-6 space-y-8">
+        <SidebarContent />
       </div>
 
       {/* Main content */}
       <div className="flex-1 p-4 md:p-8 overflow-x-hidden">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">Patient Health Records</h1>
-        <p className="text-gray-400 mb-8">Manage and view detailed patient information, medical histories, and test reports.</p>
+        <h1 className="text-4xl text-center lg:text-left md:text-5xl font-bold mb-4 text-white">Patient Health Records</h1>
+        <p className="text-gray-400 text-center lg:text-left mb-8">Manage and view detailed patient information, medical histories, and test reports.</p>
         
         <section className="flex flex-wrap justify-between items-center mb-6 gap-4">
           <Select onValueChange={(value) => handleFilter('gender', value)}>
