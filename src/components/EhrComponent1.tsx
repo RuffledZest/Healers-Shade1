@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { FileText, UserCog, Calendar, Package, Plus, ChevronLeft, ChevronRight, User, MapPin, Droplet, Ruler, Weight, Pill, Stethoscope, FileSymlink, FileText as FileTextIcon, Upload, Trash2, Search, CalendarIcon } from 'lucide-react'
 import { Button } from "./ui/button"
@@ -18,8 +20,6 @@ import { Skeleton } from "./ui/skeleton"
 
 export default function PatientHealthRecord() {
   const [patients, setPatients] = useState([
-    // { id: '12345678', name: 'John Doe', age: 35, gender: 'Male', date: '2024-06-01' },
-    // { id: '23456789', name: 'Jane Smith', age: 28, gender: 'Female', date: '2023-06-02' },
     { id: '45678901', name: 'Alice Brown', age: 31, gender: 'Female', date: '2024-06-04' },
     { id: '56789012', name: 'Charlie Davis', age: 45, gender: 'Male', date: '2024-06-05' },
     { id: '67890123', name: 'Eva Wilson', age: 39, gender: 'Female', date: '2024-07-06' },
@@ -165,36 +165,39 @@ export default function PatientHealthRecord() {
   }, [])
 
   return (
-    <div className="flex min-h-screen bg-black text-white">
+    <div className="flex  flex-row min-h-screen bg-black text-white">
       {/* Sidebar */}
-      <div className="w-24 md:w-60 lg:w-64 bg-n-8 p-1 md:p-6 space-y-8">
-        <h2 className="text-xs md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
-        <nav className="space-y-4">
+      <div className="w-30 md:w-24 lg:w-64 bg-n-8 p-4 md:p-6 space-y-8">
+        <h2 className="text-sm md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
+        <nav className="space-y-2">
           {[
             { name: 'Health Records', icon: FileText },
             { name: 'Doctor Dashboard', icon: UserCog },
             { name: 'Appointments', icon: Calendar },
             { name: 'Inventory', icon: Package },
-          ].map((item) => (
-            <Link 
-              key={item.name} 
-              to={`/${item.name.toLowerCase().replace(' ', '-')}`} 
-              className="flex items-center p-3 rounded-lg hover:bg-[#7047eb] transition-colors duration-200"
-            >
-              <item.icon className="h-5 w-5 md:mr-3" />
-              <span className='hidden md:block'>{item.name}</span>
-            </Link>
+          ].map((item, index) => (
+            <React.Fragment key={item.name}>
+              <Link 
+                to={`/${item.name.toLowerCase().replace(' ', '-')}`} 
+                className="flex items-center p-3 rounded-lg hover:bg-[#7047eb] transition-colors duration-200"
+              >
+                <item.icon className="h-5 w-5 md:mr-3" />
+                <span className='hidden md:block'>{item.name}</span>
+              </Link>
+              {index < 3 && <div className="h-px bg-gray-700 my-2 mx-4" />}
+            </React.Fragment>
           ))}
         </nav>
       </div>
 
       {/* Main content */}
-      <div className="flex-1 p-8">
-        <h1 className="text-3xl font-bold mb-8 text-[#7047eb]">Patient Health Records</h1>
+      <div className="flex-1 p-4 md:p-8 overflow-x-hidden">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">Patient Health Records</h1>
+        <p className="text-gray-400 mb-8">Manage and view detailed patient information, medical histories, and test reports.</p>
         
-        <section className="flex justify-between px-4 mx-5 items-center mb-2">
+        <section className="flex flex-wrap justify-between items-center mb-6 gap-4">
           <Select onValueChange={(value) => handleFilter('gender', value)}>
-            <SelectTrigger className="w-[150px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
+            <SelectTrigger className="w-full md:w-[150px] bg-n-8 text-white border hover:border-[#7047eb] rounded-lg">
               <SelectValue placeholder="Gender" />
             </SelectTrigger>
             <SelectContent className="bg-n-8 text-white border-gray-700">
@@ -205,11 +208,11 @@ export default function PatientHealthRecord() {
             </SelectContent>
           </Select>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 w-full md:w-auto">
             <Search className="text-[#7047eb]" />
             <Input
               placeholder="Search by name or ID"
-              className="bg-transparent border hover:border-[#7047eb] text-white border-gray-700"
+              className="w-full md:w-auto bg-transparent border hover:border-[#7047eb] text-white border-gray-700"
               onChange={(e) => handleFilter('search', e.target.value)}
             />
           </div>
@@ -220,7 +223,7 @@ export default function PatientHealthRecord() {
                 id="date"
                 variant={"outline"}
                 className={cn(
-                  "w-[300px] justify-start text-left font-normal",
+                  "w-full md:w-[300px] justify-start text-left font-normal",
                   !filters.date && "text-muted-foreground"
                 )}
               >
@@ -253,7 +256,7 @@ export default function PatientHealthRecord() {
 
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
+              <Button className="w-full md:w-auto bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Patient
               </Button>
@@ -415,7 +418,7 @@ export default function PatientHealthRecord() {
               </div>
             </div>
           </MouseParallax>
-          <div className="bg-n-8/[0.5] rounded-lg p-4 m-1 overflow-auto max-h-[calc(100vh-250px)] shadow-lg" style={{ scrollbarWidth: 'thin', scrollbarColor: '#7047eb65 #1f2937' }}>
+          <div className="bg-n-8/[0.5] rounded-lg p-4 overflow-x-auto shadow-lg">
             <Table>
               <TableHeader>
                 <TableRow className="border-r border-transparent rounded-lg">
@@ -463,7 +466,7 @@ export default function PatientHealthRecord() {
           </div>
         </div>
 
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex flex-col md:flex-row justify-between items-center mt-4 gap-4">
           <div className="flex items-center space-x-2">
             <span>Show</span>
             <Select onValueChange={handleItemsPerPageChange} defaultValue="10">
