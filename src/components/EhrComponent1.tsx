@@ -230,7 +230,7 @@ export default function PatientHealthRecord() {
           </Select>
 
           <div className="flex items-center space-x-2 w-full md:w-auto">
-            <Search className="text-[#7047eb]" />
+            <Search className="hidden sm:block text-[#7047eb]" />
             <Input
               placeholder="Search by name or ID"
               className="w-full md:w-auto bg-transparent border hover:border-[#7047eb] text-white border-gray-700"
