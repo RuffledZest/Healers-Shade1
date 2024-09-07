@@ -31,17 +31,17 @@ function LandingPage() {
     return (
       <>
   
-        <section style={{ backgroundImage: `url(${backgroundImage})`,
+        {/* <section style={{ backgroundImage: `url(${backgroundImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
          
     
-         }}>
+         }}> */}
           <NavbarDemo/>
           <Hero/>
       
-        </section>
+        {/* </section> */}
 
      
         <CardSpotlightEffect1/>
