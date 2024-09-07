@@ -1,12 +1,13 @@
 'use client'
 
 import React, { useState } from 'react'
-import { FileText, UserCog, Calendar, Package, Minus, Plus, Syringe, Pill, Droplet } from 'lucide-react'
+import { FileText, UserCog, Calendar, Package, Minus, Plus, Syringe, Pill, Droplet, Menu } from 'lucide-react'
 import { Button } from "./ui/button"
 import { Link } from 'react-router-dom'
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { MouseParallax } from "react-just-parallax"
 import { gradient } from '../assets'
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
 
 type InventoryItem = {
   name: string
@@ -19,7 +20,12 @@ type InventorySection = {
   items: InventoryItem[]
 }
 
+
+
+
+
 export default function Inventory1() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [inventory, setInventory] = useState<InventorySection[]>([
     {
       name: "Medical Supplies and Consumables",
@@ -50,29 +56,51 @@ export default function Inventory1() {
     })
   }
 
-  return (
-    <div className="flex min-h-screen bg-black text-white">
-      {/* Sidebar */}
-      <div className="w-24 md:w-60 lg:w-64 bg-n-8 p-1 md:p-6 space-y-8">
-        <h2 className="text-xs md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
-        <nav className="space-y-4">
-          {[
-            { name: 'Health Records', icon: FileText },
-            { name: 'Doctor Dashboard', icon: UserCog },
-            { name: 'Appointments', icon: Calendar },
-            { name: 'Inventory', icon: Package },
-          ].map((item) => (
+  const SidebarContent = () => (
+    <>
+      <h2 className="text-xl md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
+      <nav className="space-y-2">
+        {[
+          { name: 'Health Records', icon: FileText },
+          { name: 'Doctor Dashboard', icon: UserCog },
+          { name: 'Appointments', icon: Calendar },
+          { name: 'Inventory', icon: Package },
+        ].map((item, index) => (
+          <React.Fragment key={item.name}>
             <Link 
-              key={item.name} 
               to={`/${item.name.toLowerCase().replace(' ', '-')}`} 
               className="flex items-center p-3 rounded-lg hover:bg-[#7047eb] transition-colors duration-200"
+              onClick={() => setIsSidebarOpen(false)}
             >
               <item.icon className="h-5 w-5 md:mr-3" />
-              <span className='hidden md:block'>{item.name}</span>
+              <span className='md:block'>{item.name}</span>
             </Link>
-          ))}
-        </nav>
+            {index < 3 && <div className="h-px bg-gray-700 my-2 mx-4" />}
+          </React.Fragment>
+        ))}
+      </nav>
+    </>
+  )
+
+  return (
+    <div className="flex flex-col md:flex-row min-h-screen bg-black text-white">
+      {/* Mobile Sidebar */}
+      <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" className="md:hidden fixed top-4 left-4 z-50">
+            <Menu className="h-6 w-6" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-[240px] bg-n-8 p-4 md:p-6">
+          <SidebarContent />
+        </SheetContent>
+      </Sheet>
+
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block w-64 bg-n-8 p-4 md:p-6 space-y-8">
+        <SidebarContent />
       </div>
+
 
       {/* Main content */}
       <div className="flex-1 p-8">

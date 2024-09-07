@@ -12,6 +12,8 @@ import DoctorDashboard from "./pages/DoctorDashboard/DoctorDashboard";
 import InventoryPage from "./pages/Inventory/InventoryPage";
 import Appointments from "./pages/Appointments/Appointments";
 import PatientDetails from "./components/PatientRecord1";
+import MedicalHistory from "./components/MedicalHistory";
+import TestReport from "./components/TestReport";
 
 
 function App() {
@@ -43,6 +45,14 @@ function App() {
     {
       path: "/patient/:id",
       element: <PatientDetails />
+    },
+    {
+      path: "/patient/:id/medical-history",
+      element: <MedicalHistory />
+    },
+    {
+      path: "/patient/:id/test-report",
+      element: <TestReport />
     },
 
     {
