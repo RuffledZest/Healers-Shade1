@@ -14,10 +14,12 @@ import { Toaster } from "./ui/sonner"
 import { toast } from "sonner"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 import { Badge } from "./ui/badge"
-import { User, MapPin, Droplet, Ruler, Weight, FileText, Stethoscope, Calendar, FileSymlink, Pill, TrendingUp, Activity, Package, UserCog } from 'lucide-react'
+import { User, MapPin, Droplet, Ruler, Weight, FileText, Stethoscope, Calendar, FileSymlink, Pill, TrendingUp, Activity, Package, UserCog, Menu, Send } from 'lucide-react'
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { MouseParallax, ScrollParallax } from "react-just-parallax"
 import { gradient } from '../assets'
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import { motion } from 'framer-motion'
 
 
 // Dummy data for charts
@@ -63,6 +65,8 @@ export default function PatientDetails() {
   const { id } = useParams<{ id: string }>()
   const [isEditing, setIsEditing] = useState(false)
   const [editedData, setEditedData] = useState(patientData)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [aiQuery, setAiQuery] = useState('')
 
   const handleEdit = () => {
     setIsEditing(true)
@@ -77,32 +81,60 @@ export default function PatientDetails() {
     const { name, value } = e.target
     setEditedData(prev => ({ ...prev, [name]: value }))
   }
+
+  const handleAiQuery = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Here you would typically send the query to an AI service
+    toast.success(`Query sent: ${aiQuery}`)
+    setAiQuery('')
+  }
   const parallaxRef = useRef(null)
 
-  return (
-    <div className='flex min-h-screen bg-black text-white'>
-        
-        
-    <div className="w-24 md:w-60 lg:w-64 bg-n-8 p-1 md:p-6 space-y-8">
-        <h2 className="text-xs md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
-        <nav className="space-y-4">
-          {[
-            { name: 'Health Records', icon: FileText },
-            { name: 'Doctor Dashboard', icon: UserCog },
-            { name: 'Appointments', icon: Calendar },
-            { name: 'Inventory', icon: Package },
-          ].map((item) => (
+  const SidebarContent = () => (
+    <>
+      <h2 className="text-xl md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
+      <nav className="space-y-2">
+        {[
+          { name: 'Health Records', icon: FileText },
+          { name: 'Doctor Dashboard', icon: UserCog },
+          { name: 'Appointments', icon: Calendar },
+          { name: 'Inventory', icon: Package },
+        ].map((item, index) => (
+          <React.Fragment key={item.name}>
             <Link 
-              key={item.name} 
               to={`/${item.name.toLowerCase().replace(' ', '-')}`} 
               className="flex items-center p-3 rounded-lg hover:bg-[#7047eb] transition-colors duration-200"
+              onClick={() => setIsSidebarOpen(false)}
             >
               <item.icon className="h-5 w-5 md:mr-3" />
-              <span className='hidden md:block'>{item.name}</span>
+              <span className='md:block'>{item.name}</span>
             </Link>
-          ))}
-        </nav>
+            {index < 3 && <div className="h-px bg-gray-700 my-2 mx-4" />}
+          </React.Fragment>
+        ))}
+      </nav>
+    </>
+  )
+
+  return (
+    <div className="flex flex-col md:flex-row min-h-screen bg-black text-white">
+      {/* Mobile Sidebar */}
+      <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
+        <SheetTrigger asChild>
+          <Button variant="ghost" className="md:hidden fixed top-4 left-4 z-50">
+            <Menu className="h-6 w-6" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-[240px] bg-n-8 p-4 md:p-6">
+          <SidebarContent />
+        </SheetContent>
+      </Sheet>
+
+      {/* Desktop Sidebar */}
+      <div className="hidden md:block w-64 bg-n-8 p-4 md:p-6 space-y-8">
+        <SidebarContent />
       </div>
+
 
 
     <div className="flex-1 min-h-screen bg-black text-white p-8">
@@ -114,16 +146,16 @@ export default function PatientDetails() {
         <span className="text-[#7047eb]">Patient Details</span>
       </div>
 
-      <div className="flex items-center gap-8 mb-8">
+      <div className="flex  items-center gap-8 mb-8">
         
-        <Avatar className="w-24 h-24">
+        <Avatar className="w-32 h-32">
             <AvatarImage src={`/defaultProfilePhoto.jpg`} />
           {/* <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${editedData.name}`} /> */}
           <AvatarFallback>{editedData.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
         </Avatar>
-        <div>
+        <div className='flex  justify-between w-full'>
           <h1 className="text-4xl font-bold">{editedData.name}</h1>
-          <p className="text-gray-400">Patient ID: {editedData.id}</p>
+          <p className="text-gray-400 text-xl">Patient ID: {id}</p>
         </div>
       </div>
 
@@ -210,94 +242,34 @@ export default function PatientDetails() {
         
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 -mb-3">
+      <div className="">
         
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="w-full bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white flex items-center justify-center gap-2">
-              <FileText className="text-[#7047eb]" />
-              Medical History
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-black text-white  border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Medical History</DialogTitle>
-              <DialogDescription>Patient's medical history records</DialogDescription>
-            </DialogHeader>
-            <ScrollArea className="h-[400px] pr-4">
-              {editedData.medicalHistory.map((history, index) => (
-                <div key={history.id} className="mb-4">
-                  <h4 className="font-semibold text-[#7047eb]">Medical Report {index + 1}</h4>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    <div className="flex items-center gap-2">
-                      <Pill className="text-[#7047eb]" />
-                      <span>{history.pharmacy}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Stethoscope className="text-[#7047eb]" />
-                      <span>{history.physician}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="text-[#7047eb]" />
-                      <span>{history.event}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FileSymlink className="text-[#7047eb]" />
-                      <span>{history.prescription}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Pill className="text-[#7047eb]" />
-                      <span>{history.remedies}</span>
-                    </div>
-                  </div>
-                  {index < editedData.medicalHistory.length - 1 && <Separator className="my-4" />}
-                </div>
-              ))}
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
-
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="w-full bg-black border hover:bg-transparent hover:border-[#7047eb] hover:scale-95 transition duration-300 text-white flex items-center justify-center gap-2">
-              <FileText className="text-[#7047eb]" />
-              Test Reports
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-black text-white  border-gray-700 max-w-4xl max-h-[100vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Test Reports</DialogTitle>
-              <DialogDescription>Patient's test report records</DialogDescription>
-            </DialogHeader>
-            <ScrollArea className="h-[400px] pr-4">
-              {editedData.testReports.map((report, index) => (
-                <div key={report.id} className="mb-4">
-                  <h4 className="font-semibold text-[#7047eb]">Report {index + 1}</h4>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    <div className="flex items-center gap-2">
-                      <Stethoscope className="text-[#7047eb]" />
-                      <span>{report.doctor}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FileSymlink className="text-[#7047eb]" />
-                      <span>{report.referredTo}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <FileText className="text-[#7047eb]" />
-                      <span>{report.type}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="text-[#7047eb]" />
-                      <span>{report.date}</span>
-                    </div>
-                  </div>
-                  <img src={report.testImage} alt={`Test Report ${index + 1}`} className=" p-10 rounded-lg w-full h-full object-cover mt-2" />
-                  {index < editedData.testReports.length - 1 && <Separator className="my-4" />}
-                </div>
-              ))}
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <Link to={`/patient/${id}/medical-history`}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full h-40 bg-[#131313a2] border border-[#7047eb] rounded-lg flex items-center justify-center cursor-pointer"
+            >
+              <div className="text-center">
+                <FileText className="text-[#7047eb] w-12 h-12 mb-2 mx-auto" />
+                <span className="text-xl font-semibold">Medical History</span>
+              </div>
+            </motion.div>
+          </Link>
+          <Link to={`/patient/${id}/test-report`}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full h-40 bg-[#131313a2] border border-[#7047eb] rounded-lg flex items-center justify-center cursor-pointer"
+            >
+              <div className="text-center">
+                <FileText className="text-[#7047eb] w-12 h-12 mb-2 mx-auto" />
+                <span className="text-xl font-semibold">Test Reports</span>
+              </div>
+            </motion.div>
+          </Link>
+        </div>
         <MouseParallax ref={parallaxRef} className="relative z-10">
             <div className="hidden sm:block inset-0 left-90 w-[56.625rem] opacity-10 mix-blend-color-dodge pointer-events-none">
               <div className="absolute top-1/2 left-1/2 w-[58.85rem] h-[58.85rem] -translate-x-3/4 -translate-y-1/2">
@@ -306,6 +278,41 @@ export default function PatientDetails() {
             </div>
           </MouseParallax>
       </div>
+
+
+
+
+
+
+      <section className="mb-12">
+          <h2 className="text-2xl font-bold mb-6">Ask the AI for patient details</h2>
+          <form onSubmit={handleAiQuery} className="relative">
+            <motion.div
+              initial={{ scale: 1 }}
+              animate={{ scale: [1, 1.02, 1] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            >
+              <Input
+                type="text"
+                placeholder="Ask anything about this patient..."
+                value={aiQuery}
+                onChange={(e) => setAiQuery(e.target.value)}
+                className="w-full pr-12 bg-[#131313a2] border-[#7047eb] text-white placeholder-gray-400"
+              />
+            <Button
+              type="submit"
+              className="absolute right-0.25 top-1/2 transform -translate-y-1/2 bg-[#7047eb] hover:bg-[#5f3cc4]"
+              >
+              <Send className="h-4 w-4" />
+            </Button>
+              </motion.div>
+          </form>
+        </section>
+
+
+
+
+
 
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-6">Patient Analysis</h2>
