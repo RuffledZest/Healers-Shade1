@@ -6,6 +6,9 @@ import { HeroScrollDemo } from "./ScrollHero";
 import { BackgroundBoxesDemo } from "./BackgroundBoxes";
 import { motion } from "framer-motion";
 import { Features } from "./FeatureSection/Features2";
+import Iphone15Pro from "./magicui/iphone-15-pro";
+import { VelocityScroll } from "./magicui/scroll-based-velocity";
+import RetroGrid from "./magicui/retro-grid";
 
 export const CardSpotlightEffect1 = () => {
     const divRef = useRef<HTMLDivElement>(null);
@@ -63,7 +66,28 @@ export const CardSpotlightEffect1 = () => {
         {/* <Roadmap /> */}
         <Features />
         <AnimatedPinDemo />
-        <HeroScrollDemo />
+        {/* <HeroScrollDemo /> */}
+        
+        
+    <div className="m-10 ml-15 relative flex h-[500px] w-[90vw] flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+      <span className="pointer-events-none z-10 whitespace-pre-wrap bg-gradient-to-b from-[#ffd319] via-[#ff2975] to-[#8c1eff] bg-clip-text text-center text-4xl font-bold leading-none tracking-tighter text-transparent">
+        Download Our Mobile App
+        <div className="relative flex">
+      <Iphone15Pro
+        className="size-[430px] md:size-[430px] lg:size-[430px] xl:size-[430px] 2xl:size-[430px] "
+        src="/mobileAppImg.jpg"
+      />
+      
+      <Iphone15Pro
+        className="size-[430px] md:size-[430px] lg:size-[430px] xl:size-[430px] 2xl:size-[430px] "
+        src="/mobileAppImg.jpg"
+      />
+    </div>
+      </span>
+ 
+      <RetroGrid />
+    </div>
+
         <BackgroundBoxesDemo/>
 
 

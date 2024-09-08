@@ -12,6 +12,7 @@ import React from 'react'
 import { gradient} from "../../assets";
 import {useRef} from "react";
 import { MouseParallax, ScrollParallax } from "react-just-parallax";
+import { VelocityScroll } from '../magicui/scroll-based-velocity'
 
 
 const features = [
@@ -161,6 +162,14 @@ export function Features() {
           </div>
         </Tabs>
       </div>
+      <div className=" rotate-6 ">
+
+            <VelocityScroll
+            text="Wait We Have More"
+            default_velocity={1}
+            className="font-display text-center text-4xl font-bold tracking-[-0.02em] text-black/70 drop-shadow-sm dark:text-white/30 md:text-7xl md:leading-[5rem]"
+          />
+        </div>
     </section>
   )
 }

@@ -5,8 +5,9 @@ import { Link, useParams } from 'react-router-dom'
 import { Button } from "./ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { ScrollArea } from "./ui/scroll-area"
-import { Stethoscope, FileSymlink, FileText, Calendar, Package, UserCog, Menu } from 'lucide-react'
+import { Stethoscope, FileSymlink, FileText, Calendar, Package, UserCog, Menu, X } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
 
 // Dummy test report data
 const testReportData = [
@@ -20,10 +21,12 @@ const testReportData = [
 export default function TestReport() {
   const { id } = useParams<{ id: string }>()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   const SidebarContent = () => (
     <>
-      <h2 className="text-xl md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
+      {/* <h2 className="text-xl md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2> */}
+      <img src={'/HealersHealthcareOfficialLogo.png'} alt="Healers Healthcare" className="w-40 mx-auto" />
       <nav className="space-y-2">
         {[
           { name: 'Health Records', icon: FileText },
@@ -102,7 +105,31 @@ export default function TestReport() {
                     <span>Date: {report.date}</span>
                   </div>
                 </div>
-                <img src={report.testImage} alt={`Test Report ${index + 1}`} className="w-full h-auto object-cover rounded-lg mb-4" />
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <img 
+                      src={report.testImage} 
+                      alt={`Test Report ${index + 1}`} 
+                      className="w-[60vh] h-[70vh] object-cover rounded-lg mb-4 cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => setSelectedImage(report.testImage)}
+                    />
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[90vw] sm:max-h-[90vh] p-0 bg-transparent border-none">
+                    <div className="relative">
+                      <img 
+                        src={selectedImage || ''} 
+                        alt="Full size test report" 
+                        className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
+                      />
+                      <Button 
+                        className="absolute top-2 right-2 bg-black bg-opacity-50 hover:bg-opacity-75 rounded-full p-2"
+                        onClick={() => setSelectedImage(null)}
+                      >
+                        <X className="h-6 w-6" />
+                      </Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
                 <p className="text-gray-300">Comments: {report.comments}</p>
               </CardContent>
             </Card>
