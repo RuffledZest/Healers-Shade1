@@ -22,7 +22,7 @@ function Navbar({ className }: { className?: string }) {
     >
       <Menu setActive={setActive}>
       
-      <div className="hidden lg:flex justify-between items-center gap-4 logo bg-[#000000] px-6 py-3 rounded-full">
+      <div className="hidden lg:flex justify-between items-center gap-4 logo bg-transparent px-6 py-3 rounded-full">
         <HoveredLink href="/">
           <img
             src="/HealersHealthcareLogo.png"
