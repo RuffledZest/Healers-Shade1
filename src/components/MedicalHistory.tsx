@@ -80,9 +80,9 @@ export default function MedicalHistory() {
 
         <ScrollArea className="h-[calc(100vh-200px)] pr-4">
           {medicalHistoryData.map((history, index) => (
-            <Card key={history.id} className="mb-6 bg-[#131313a2] border-[#7047eb]">
+            <Card key={history.id} className="mb-6 text-white bg-[#131313a2] border hover:border-[#7047eb] transition duration-100">
               <CardHeader>
-                <CardTitle className="text-[#7047eb]">Medical Report {index + 1}</CardTitle>
+                <CardTitle className="text-[#fff]">Medical Report {index + 1}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

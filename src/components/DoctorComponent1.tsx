@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
-import { FileText, UserCog, Calendar, Package, Plus, ChevronLeft, ChevronRight, User, MapPin, Phone, Clock, Briefcase, Search, CalendarIcon, Menu } from 'lucide-react'
+import { FileText, UserCog, Calendar, Package, Plus, ChevronLeft, ChevronRight, User, MapPin, Phone, Clock, Briefcase, Search, CalendarIcon, Menu, CalendarCheck } from 'lucide-react'
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import { Link } from 'react-router-dom'
@@ -26,12 +26,23 @@ export default function DoctorRecord() {
   const [doctors, setDoctors] = useState([
     { id: '12345678', name: 'Dr. John Doe', experience: 10, specialty: 'NEUROSURGEON', mobile: '1234567890', daysAvailable: ['Mon', 'Wed', 'Fri'], dutyStart: '09:00', dutyEnd: '17:00' },
     { id: '23456789', name: 'Dr. Jane Smith', experience: 8, specialty: 'PEDIATRICIAN', mobile: '2345678901', daysAvailable: ['Tue', 'Thu', 'Sat'], dutyStart: '10:00', dutyEnd: '18:00' },
-    // Add more dummy data as needed
+    //add 10 more distinct doctors data
+    { id: '34567890', name: 'Dr. John Doe', experience: 10, specialty: 'NEUROSURGEON', mobile: '1234567890', daysAvailable: ['Mon', 'Wed', 'Fri'], dutyStart: '09:00', dutyEnd: '17:00' },
+    { id: '45678901', name: 'Dr. Jane Smith', experience: 8, specialty: 'PEDIATRICIAN', mobile: '2345678901', daysAvailable: ['Tue', 'Thu', 'Sat'], dutyStart: '10:00', dutyEnd: '18:00' },
+    { id: '56789012', name: 'Dr. John Doe', experience: 10, specialty: 'NEUROSURGEON', mobile: '1234567890', daysAvailable: ['Mon', 'Wed', 'Fri'], dutyStart: '09:00', dutyEnd: '17:00' },
+    { id: '67890123', name: 'Dr. Jane Smith', experience: 8, specialty: 'PEDIATRICIAN', mobile: '2345678901', daysAvailable: ['Tue', 'Thu', 'Sat'], dutyStart: '10:00', dutyEnd: '18:00' },
+    { id: '78901234', name: 'Dr. John Doe', experience: 10, specialty: 'NEUROSURGEON', mobile: '1234567890', daysAvailable: ['Mon', 'Wed', 'Fri'], dutyStart: '09:00', dutyEnd: '17:00' },
+    { id: '89012345', name: 'Dr. Jane Smith', experience: 8, specialty: 'PEDIATRICIAN', mobile: '2345678901', daysAvailable: ['Tue', 'Thu', 'Sat'], dutyStart: '10:00', dutyEnd: '18:00' },
+    { id: '90123456', name: 'Dr. John Doe', experience: 10, specialty: 'NEUROSURGEON', mobile: '1234567890', daysAvailable: ['Mon', 'Wed', 'Fri'], dutyStart: '09:00', dutyEnd: '17:00' },
+    { id: '01234567', name: 'Dr. Jane Smith', experience: 8, specialty: 'PEDIATRICIAN', mobile: '2345678901', daysAvailable: ['Tue', 'Thu', 'Sat'], dutyStart: '10:00', dutyEnd: '18:00' },
+    { id: '12345678', name: 'Dr. John Doe', experience: 10, specialty: 'NEUROSURGEON', mobile: '1234567890', daysAvailable: ['Mon', 'Wed', 'Fri'], dutyStart: '09:00', dutyEnd: '17:00' },
+    { id: '23456789', name: 'Dr. Jane Smith', experience: 8, specialty: 'PEDIATRICIAN', mobile: '2345678901', daysAvailable: ['Tue', 'Thu', 'Sat'], dutyStart: '10:00', dutyEnd: '18:00' },
+
   ])
 
   const [currentPage, setCurrentPage] = useState(1)
   const [isOpen, setIsOpen] = useState(false)
-  const [filters, setFilters] = useState({ specialty: '', days: [], search: '' })
+  const [filters, setFilters] = useState<{ specialty: string; days: string[]; search: string }>({ specialty: '', days: [], search: '' })
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [isLoading, setIsLoading] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -198,77 +209,126 @@ export default function DoctorRecord() {
 
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="w-full md:w-auto bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
+              <Button className="w-full md:w-auto bg-black border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Doctor
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-black text-white border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="bg-black text-white border-gray-700 max-w-[90%] h-[70%] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="text-2xl font-bold text-[#7047eb] mb-4">Add New Doctor</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleAddDoctor} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="space-y-2">
                     <div className="flex items-center space-x-2">
-                      <User className="text-[#7047eb]" />
-                      <Input name="name" placeholder="Name" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
+
+
+                       <User className="text-[#fff]" />
+                      <Label htmlFor="name">Name</Label>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Briefcase className="text-[#7047eb]" />
-                      <Input name="experience" type="number" placeholder="Experience (years)" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
+                      <Input id="name" name="name" placeholder="Dr. John Doe" className="bg-black border-gray-700 focus:border-[#7047eb]" />
+                    
+
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <UserCog className="text-[#7047eb]" />
+                    <div className="space-y-2">
+                      
+                      <div className="flex items-center space-x-2">
+
+
+                      <Briefcase className="text-[#fff]" />
+                      <Label htmlFor="experience">Experience (years)</Label>
+</div>
+
+                      <Input id="experience" name="experience" type="number" placeholder="5" className="bg-black border-gray-700 focus:border-[#7047eb]" />
+                    </div>
+                    <div className="space-y-2">
+                      
+                      <div className="flex items-center space-x-2">
+
+
+                      <UserCog className="text-[#fff]" />
+<Label htmlFor="specialty">Specialty</Label></div>
                       <Select name="specialty">
-                        <SelectTrigger className="w-full bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200">
+                        <SelectTrigger className="bg-black border-gray-700 focus:border-[#7047eb]">
                           <SelectValue placeholder="Select Specialty" />
                         </SelectTrigger>
-                        <SelectContent className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200">
+                        <SelectContent className="bg-black border-gray-700">
                           {specialties.map(specialty => (
                             <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Phone className="text-[#7047eb]" />
-                      <Input name="mobile" placeholder="Mobile No." className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+
+
+                      <Phone className="text-[#fff]" />
+<Label htmlFor="mobile">Mobile No.</Label>
+</div>
+                      <Input id="mobile" name="mobile" placeholder="+1 234 567 8900" className="bg-black border-gray-700 focus:border-[#7047eb]" />
                     </div>
                   </div>
-                  
-                  <div className="space-y-3">
-                    <div>
-                      <Label className="text-[#7047eb] mb-2 block">Days Available</Label>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      
+                      <div className="flex items-center space-x-2">
+                        <CalendarCheck className="text-[#fff]" />
+
+
+<Label>Days Available</Label></div>
                       <div className="grid grid-cols-3 gap-2">
                         {days.map(day => (
-                          <div key={day} className="flex items-center">
+                          <div key={day} className="flex items-center space-x-2">
                             <Checkbox id={`day-${day}`} name={day} />
-                            <Label htmlFor={`day-${day}`} className="ml-2">{day}</Label>
+                            <Label htmlFor={`day-${day}`}>{day}</Label>
                           </div>
                         ))}
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock className="text-[#7047eb]" />
-                      <Input name="dutyStart" type="time" placeholder="Duty Start Time" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                       
+                        <div className="flex items-center space-x-2">
+
+
+                        <Clock className="text-[#fff]" />
+                        <Label htmlFor="dutyStart">Duty Start Time</Label></div>
+                        <Input id="dutyStart" name="dutyStart" type="time" className="bg-black border-gray-700 focus:border-[#7047eb]" />
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+
+
+                        <Clock className="text-[#fff]" />
+                        <Label htmlFor="dutyEnd">Duty End Time</Label>
+</div>
+                        <Input id="dutyEnd" name="dutyEnd" type="time" className="bg-black border-gray-700 focus:border-[#7047eb]" />
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Clock className="text-[#7047eb]" />
-                      <Input name="dutyEnd" type="time" placeholder="Duty End Time" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+
+
+                      <Briefcase className="text-[#fff]" />
+<Label htmlFor="qualification">Qualification</Label>
+</div>
+                      <Input id="qualification" name="qualification" placeholder="MBBS, MD" className="bg-black border-gray-700 focus:border-[#7047eb]" />
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Briefcase className="text-[#7047eb]" />
-                      <Input name="qualification" placeholder="Qualification" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <CalendarIcon className="text-[#7047eb]" />
-                      <Input name="opdFees" type="number" placeholder="OPD Fees" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
+                    <div className="space-y-2">
+                      <div className="flex items-center space-x-2">
+
+
+                      <CalendarIcon className="text-[#fff]" />
+<Label htmlFor="opdFees">OPD Fees</Label>
+</div>
+                      <Input id="opdFees" name="opdFees" type="number" placeholder="100" className="bg-black border-gray-700 focus:border-[#7047eb]" />
                     </div>
                   </div>
                 </div>
-                
-                <Button type="submit" className="w-full border bg-[#7047eb] hover:bg-[#000] hover:border-[#7047eb] text-white">
+                <Button type="submit" className="w-[30vh] bg-black border hover:bg-transparent hover:border-[#7047eb] text-white">
                   Add Doctor
                 </Button>
               </form>
