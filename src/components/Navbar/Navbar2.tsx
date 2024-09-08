@@ -24,17 +24,8 @@ function Navbar({ className }: { className?: string }) {
       
       <div className="hidden lg:flex justify-between items-center gap-4 logo bg-transparent px-6 py-3 rounded-full">
         <HoveredLink href="/">
-          <img
-            src="/HealersHealthcareLogo.png"
-            alt="Healers Healthcare"
-            className="h-9 w-auto"
-          />
+        <img src={'/HealersHealthcareOfficialLogo.png'} alt="Healers Healthcare" className="w-40 mx-auto" />
         </HoveredLink>
-          <div className="CompanyName hidden lg:flex flex-col">
-          <h1 className="text-sm font-bold bg-gradient-to-r from-[#d265da] via-[#00e7ea] to-[#6a8ad3] inline-block text-transparent drop-shadow-2xl bg-clip-text">Healers</h1>
-          <h2 className="text-sm font-bold bg-gradient-to-r from-[#d265da] via-[#00e7ea] to-[#6a8ad3] inline-block text-transparent drop-shadow-2xl bg-clip-text">Healthcare</h2>
-
-          </div>
       </div>
       <div className="navbaritems bg-[#000000] flex py-2 px-2 rounded-full justify-between items-center gap-x-0.5 sm:gap-4 lg:gap-10">
 

@@ -137,7 +137,8 @@ export default function PatientDetails() {
 
   const SidebarContent = () => (
     <>
-      <h2 className="text-xl md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2>
+      {/* <h2 className="text-xl md:text-2xl font-bold text-[#7047eb] mb-8">Healers Healthcare</h2> */}
+      <img src={'/HealersHealthcareOfficialLogo.png'} alt="Healers Healthcare" className="w-40 mx-auto" />
       <nav className="space-y-2">
         {[
           { name: 'Health Records', icon: FileText },

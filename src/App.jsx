@@ -14,6 +14,7 @@ import Appointments from "./pages/Appointments/Appointments";
 import PatientDetails from "./components/PatientRecord1";
 import MedicalHistory from "./components/MedicalHistory";
 import TestReport from "./components/TestReport";
+import DoctorAppointments from "./pages/DoctorPages/AppointmentsPage/DoctorAppointments";
 
 
 function App() {
@@ -53,6 +54,10 @@ function App() {
     {
       path: "/patient/:id/test-report",
       element: <TestReport />
+    },
+    {
+      path:"/doctor-appointments",
+      element: <DoctorAppointments />
     },
 
     {
