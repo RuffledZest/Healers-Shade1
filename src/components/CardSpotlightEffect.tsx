@@ -9,6 +9,9 @@ import { Features } from "./FeatureSection/Features2";
 import Iphone15Pro from "./magicui/iphone-15-pro";
 import { VelocityScroll } from "./magicui/scroll-based-velocity";
 import RetroGrid from "./magicui/retro-grid";
+import DotPattern from "./magicui/dot-pattern";
+import { cn } from "../lib/utils";
+import MobileAppSection from "./MobileAppSection";
 
 export const CardSpotlightEffect1 = () => {
     const divRef = useRef<HTMLDivElement>(null);
@@ -51,7 +54,7 @@ export const CardSpotlightEffect1 = () => {
         onBlur={handleBlur}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className=" relative max-w-full overflow-hidden rounded-xl  px- py "
+        className=" relative max-w-full overflow-hidden rounded-xl "
       >
         
         <div
@@ -68,26 +71,13 @@ export const CardSpotlightEffect1 = () => {
         <AnimatedPinDemo />
         {/* <HeroScrollDemo /> */}
         
+       <MobileAppSection/>
+       <p className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
+    That's Healers For You
+  </p>
+   
         
-    <div className="m-10 ml-15 relative flex h-[500px] w-[90vw] flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
-      <span className="pointer-events-none z-10 whitespace-pre-wrap bg-gradient-to-b from-[#ffd319] via-[#ff2975] to-[#8c1eff] bg-clip-text text-center text-4xl font-bold leading-none tracking-tighter text-transparent">
-        Download Our Mobile App
-        <div className="relative flex">
-      <Iphone15Pro
-        className="size-[430px] md:size-[430px] lg:size-[430px] xl:size-[430px] 2xl:size-[430px] "
-        src="/mobileAppImg.jpg"
-      />
       
-      <Iphone15Pro
-        className="size-[430px] md:size-[430px] lg:size-[430px] xl:size-[430px] 2xl:size-[430px] "
-        src="/mobileAppImg.jpg"
-      />
-    </div>
-      </span>
- 
-      <RetroGrid />
-    </div>
-
         <BackgroundBoxesDemo/>
 
 
