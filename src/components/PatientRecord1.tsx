@@ -74,10 +74,10 @@ const patientData = {
   bloodGroup: 'O+',
   height: 175,
   weight: 70,
-  location: 'New York, USA',
-  occupation: 'Software Engineer',
+  location: 'Delhi, India',
+  occupation: 'Engineer',
   allergies: 'Peanuts',
-  emergencyContact: '+1 234 567 8901',
+  emergencyContact: '+9100068686',
 }
 
 // Dummy AI responses
@@ -95,8 +95,9 @@ export default function PatientDetails() {
   const [editedData, setEditedData] = useState(patientData)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [aiQuery, setAiQuery] = useState('')
-  const [aiConversation, setAiConversation] = useState<string[]>([])
+  const [aiConversation, setAiConversation] = useState<string[]>(['AI: Hello! How can I assist you today?'])
   const chatRef = useRef<HTMLDivElement>(null)
+  const ref = useRef(null)
 
   useEffect(() => {
     // Simulate loading delay
@@ -164,9 +165,9 @@ export default function PatientDetails() {
     return (
 
       
-      <div className="flex flex-col gap-5 md:flex-row min-h-screen bg-black text-white p-8 animate-pulse">
-        <div className="w-full md:w-64 bg-gray-800 h-screen" />
-        <div className="flex-1 space-y-8">
+      <div className="flex flex-col gap-5 md:flex-row min-h-screen bg-black text-white p-8 dark:animate-pulse">
+        <div className="w-full md:w-64 bg-gray-800 h-screen rounded-lg" />
+        <div className="flex-1 space-y-8 rounded-lg">
           <div className="h-32 bg-gray-800 rounded-lg" />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="h-64 bg-gray-800 rounded-lg" />
@@ -195,66 +196,69 @@ export default function PatientDetails() {
         <SidebarContent />
       </div>
 
-      <div className="flex-1 min-h-screen bg-black text-white p-8 sm:p-10">
+      <div className="relative flex-1 min-h-screen bg-black text-white p-8 sm:p-10">
+        
         <Toaster />
         <div className="mb-6 flex items-center text-sm text-gray-500">
+          
           <a href="/health-records" className="hover:text-[#7047eb]">Health Records</a>
           <span className="mx-2">/</span>
           <span className="text-[#7047eb]">Patient Details</span>
         </div>
 
+            <p className="text-gray-400 text-center sm:text-right text-xl mb-4">Patient ID: {id}</p>
         <div className='relative bg-[#131313a2]  mb-12 flex-col items-center justify-center overflow-hidden rounded-lg border border-black md:shadow-xl'>
 
-          <Card className="bg-[#131313a2]    ">
-          <div className="flex  flex-col mx-auto sm:mx-0 items-center gap-8 p-10 md:p-15 ">
+          <Card className="bg-[#131313a2]">
+          <div className="flex  flex-col mx-auto sm:mx-0 items-center my-0 lg:my-8 p-10 md:p-15 ">
             <div className='container flex flex-wrap px-0 md:justify-between'>
 
-            <h1 className="text-5xl font-bold mb-4">{editedData.name}</h1>
-            <p className="text-gray-400 text-xl mb-4">Patient ID: {id}</p>
+            
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-0 py-5'>
+            <div className='grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-5 lg:gap-0 py-5'>
 
-            <img src={`/defaultProfilePhoto.jpg`} alt="Patient" className=" w-[30vh] sm:w-[45vh] h-[30vh] sm:h-[45vh] rounded-lg hover:scale-95 transition duration-100 mx-auto sm:mx-0" />
+            <img src={`/defaultProfilePhoto.jpg`} alt="Patient" className="sm:col-span-4 w-[30vh] sm:w-[40vh] h-[30vh] sm:h-[40vh] rounded-lg hover:scale-95 transition duration-100 mx-auto lg:mx-0 sm:my-auto" />
 
-            <div className='flex flex-col justify-between w-full'>
+            <div className='flex flex-col justify-between w-full sm:col-span-8'>
+            <h1 className="text-5xl font-bold mb-8 text-white">Name: {editedData.name}</h1>
               
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              <div className="flex items-top gap-2">
-                  <User className="h-15 w-15 text-[#7047eb]" />
-                  <span><h4>Gender:</h4> <p className='text-white/55'>{editedData.gender}</p></span>
+              <div className="flex items-top gap-2 items-center">
+                  <User className="h-8 w-8 text-[#7047eb]" />
+                  <span className='flex items-center gap-2'><h4 className='text-white'>Gender:</h4> <p className='text-white/55'>{editedData.gender}</p></span>
                 </div>
-                <div className="flex items-top gap-2">
-                  <Cake className="h-15 w-15 text-[#7047eb]" />
-                  <span><h4>Age:</h4> <p className='text-white/55'>{editedData.age}</p></span>
+                <div className="flex items-top gap-2 items-center">
+                  <Cake className="h-8 w-8 text-[#7047eb]" />
+                  <span className='flex items-center gap-2'><h4 className='text-white'>Age:</h4> <p className='text-white/55'>{editedData.age}</p></span>
                 </div>
                 
-                <div className="flex items-top gap-2 ">
-                  <MapPin className="h-15 w-15 text-[#7047eb]" />
-                  <span><h4>Location:</h4> <p className='text-white/55'>{editedData.location}</p></span>
+                <div className="flex items-top gap-2 items-center">
+                  <MapPin className="h-8 w-8 text-[#7047eb]" />
+                  <span className='flex items-center gap-2'><h4 className='text-white'>Location:</h4> <p className='text-white/55'>{editedData.location}</p></span>
                 </div>
-                <div className="flex items-top gap-2">
-                  <Droplet className="h-15 w-15 text-[#7047eb]" />
-                  <span><h4>Blood Group:</h4> <p className='text-white/55'>{editedData.bloodGroup}</p></span>
+                <div className="flex items-top gap-2 items-center">
+                  <Droplet className="h-8 w-8 text-[#7047eb]" />
+                  <span className='flex items-center gap-2'><h4 className='text-white'>Blood Group:</h4> <p className='text-white/55'>{editedData.bloodGroup}</p></span>
                 </div>
-                <div className="flex items-top gap-2">
-                  <Ruler className="h-15 w-15 text-[#7047eb]" />
-                  <span><h4>Height:</h4> <p className='text-white/55'>{editedData.height}</p></span>
+                <div className="flex items-top gap-2 items-center">
+                  <Ruler className="h-8 w-8 text-[#7047eb]" />
+                  <span className='flex items-center gap-2'><h4 className='text-white'>Height:</h4> <p className='text-white/55'>{editedData.height}</p></span>
                 </div>
-                <div className="flex items-top gap-2">
-                  <Weight className="h-15 w-15 text-[#7047eb]" />
-                  <span><h4>Weight:</h4> <p className='text-white/55'>{editedData.weight}</p></span>
+                <div className="flex items-top gap-2 items-center">
+                  <Weight className="h-8 w-8 text-[#7047eb]" />
+                  <span className='flex items-center gap-2'><h4 className='text-white'>Weight:</h4> <p className='text-white/55'>{editedData.weight} kg</p></span>
                 </div>
-                <div className="flex items-top gap-2">
-                  <BackpackIcon className="h-15 w-15 text-[#7047eb]" />
-                  <span><h4>Occupation:</h4> <p className='text-white/55'>{editedData.occupation}</p></span>
+                <div className="flex items-top gap-2 items-center">
+                  <BackpackIcon className="h-8 w-8 text-[#7047eb]" />
+                  <span className='flex items-center gap-2'><h4 className='text-white'>Occupation:</h4> <p className='text-white/55'>{editedData.occupation}</p></span>
                 </div>
-                <div className="flex items-top gap-2">
-                  <Droplet className="h-15 w-15 text-[#7047eb]" />
-                  <span><h4>Allergies:</h4> <p className='text-white/55'>{editedData.allergies}</p></span>
+                <div className="flex items-top gap-2 items-center">
+                  <Droplet className="h-8 w-8 text-[#7047eb]" />
+                  <span className='flex items-center gap-2'><h4 className='text-white'>Allergies:</h4> <p className='text-white/55'>{editedData.allergies}</p></span>
                 </div>
-                <div className="flex items-top gap-2">
-                  <User className="h-15 w-15 text-[#7047eb]" />
-                  <span><h4>Contact:</h4> <p className='text-white/55'>{editedData.emergencyContact}</p></span>
+                <div className="flex items-top gap-2 items-center">
+                  <User className="h-8 w-8 text-[#7047eb]" />
+                  <span className='flex items-center gap-2'><h4 className='text-white'>Contact:</h4> <p className='text-white/55'>{editedData.emergencyContact}</p></span>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 ">
@@ -276,8 +280,18 @@ export default function PatientDetails() {
 
         </div>
 
+        <div className='relative'>
+        <MouseParallax ref={parallaxRef} className="absolute z-10">
+            <div className="hidden sm:block inset-0 left-90 w-[56.625rem] opacity-10 mix-blend-color-dodge pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 w-[58.85rem] h-[58.85rem] -translate-x-3/4 -translate-y-1/2">
+                <img className="w-full" src={gradient} width={942} height={942} alt="" />
+              </div>
+            </div>
+          </MouseParallax>
 
-        <div className="flex justify-between items-center mb-8 sm:mb-15">
+
+        <div className=" flex justify-between items-center mb-8 sm:mb-15">
+        
           <h2 className="text-4xl font-bold">Patient Records</h2>
           <Drawer>
             <DrawerTrigger asChild>
@@ -310,6 +324,8 @@ export default function PatientDetails() {
             </DrawerContent>
           </Drawer>
         </div>
+        </div>
+
 
 
          {/* Medical History card */}
@@ -363,11 +379,11 @@ export default function PatientDetails() {
             <CardTitle className="text-2xl font-bold text-white">AI Assistant</CardTitle>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[300px] mb-4" ref={chatRef}>
+            <ScrollArea className="h-[300px] mb-4 z-3" ref={chatRef}>
               {aiConversation.map((message, index) => (
                 <div key={index} className={`mb-2 ${message.startsWith('You:')
-                  ? 'text-right'
-                  : 'text-left'}`}>
+                  ? 'text-right ml-2 text-wrap'
+                  : 'text-left mr-2 text-wrap'}`}>
                   <span className={`inline-block p-2 rounded-lg ${message.startsWith('You:')
                     ? 'bg-[#7047eb] text-white'
                     : 'bg-gray-700 text-white'}`}>

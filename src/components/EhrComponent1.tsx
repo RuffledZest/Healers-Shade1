@@ -18,6 +18,8 @@ import { DateRange } from "react-day-picker"
 import { cn } from "../lib/utils"
 import { Skeleton } from "./ui/skeleton"
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
+import { Transition, Dialog as HeadlessDialog } from '@headlessui/react'
+import GridPattern from "./magicui/grid-pattern";
 
 export default function PatientHealthRecord() {
   const [patients, setPatients] = useState([
@@ -275,160 +277,263 @@ export default function PatientHealthRecord() {
             </PopoverContent>
           </Popover>
 
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button className="w-full md:w-auto bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Patient
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-black text-white border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold text-[#7047eb] mb-4">Add New Patient</DialogTitle>
-              </DialogHeader>
-              <form onSubmit={handleAddPatient} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <h3 className="text-lg font-semibold mb-3 text-[#7047eb]">General Details</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-2">
-                        <User className="text-[#7047eb]" />
-                        <Input name="name" placeholder="Name" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
+          {/* Updated Form Popup */}
+          <Transition appear show={isOpen} as={React.Fragment}>
+            <HeadlessDialog
+              as="div"
+              className="relative z-50"
+              onClose={() => setIsOpen(false)}
+            >
+              <Transition.Child
+                as={React.Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <div className="fixed inset-0 bg-black bg-opacity-25" />
+              </Transition.Child>
+
+              <div className="fixed inset-0 overflow-y-auto">
+                <div className="flex min-h-full items-center justify-center p-4 text-center">
+                  <Transition.Child
+                    as={React.Fragment}
+                    enter="ease-out duration-300"
+                    enterFrom="opacity-0 scale-95"
+                    enterTo="opacity-100 scale-100"
+                    leave="ease-in duration-200"
+                    leaveFrom="opacity-100 scale-100"
+                    leaveTo="opacity-0 scale-95"
+                  >
+                    <HeadlessDialog.Panel className="w-full max-w-full transform overflow-hidden rounded-2xl bg-black p-6 text-left align-middle shadow-xl transition-all">
+                      <div className='w-full flex justify-end'>
+
+                    <Button type="button" onClick={() => setIsOpen(false)} className="bg-black border hover:bg-transparent hover:border-red-500">
+                            X
+                          </Button>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="text-[#7047eb]" />
-                        <Input name="age" type="number" placeholder="Age" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <UserCog className="text-[#7047eb]" />
-                        <Select name="gender">
-                          <SelectTrigger className="w-full bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200">
-                            <SelectValue placeholder="Select Gender" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200">
-                            <SelectItem value="Male">Male</SelectItem>
-                            <SelectItem value="Female">Female</SelectItem>
-                            <SelectItem value="Other">Other</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <MapPin className="text-[#7047eb]" />
-                        <Input name="location" placeholder="Location" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Droplet className="text-[#7047eb]" />
-                        <Select name="bloodGroup">
-                          <SelectTrigger className="w-full bg-black text-white border-gray-700">
-                            <SelectValue placeholder="Blood Group" />
-                          </SelectTrigger>
-                          <SelectContent className="bg-black text-white border-gray-700">
-                            {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(group => (
-                              <SelectItem key={group} value={group}>{group}</SelectItem>
+                      <HeadlessDialog.Title 
+                        as="h3" 
+                        className="text-4xl font-bold text-[#fff] mb-4 text-center"
+                      >
+                        Add New Patient
+                      </HeadlessDialog.Title>
+                      <form onSubmit={handleAddPatient} className="space-y-6 mx-5 sm:mx-10 lg:mx-20 text-white">
+                        <div className=" grid grid-cols-1 md:grid-cols-1 gap-6">
+
+                        <div className='relative border bg-[#171717a2] border-slate-600  rounded-lg p-5'>
+                        <GridPattern
+        width={20}
+        height={20}
+        x={-1}
+        y={-1}
+        className={cn(
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] ",
+        )}
+      />
+
+                            <h3 className="text-2xl font-semibold mb-3 text-[#fff]">General Details</h3>
+                            <div className="space-y-4 m-0 sm:m-10">
+                              <div className="flex items-center space-x-2">
+                                <User className="text-[#fff]" />
+                                <Input name="name" placeholder="Name" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                              </div>
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                              <div className="flex items-center space-x-2">
+                                <Calendar className="text-[#fff]" />
+                                <Input name="age" type="number" placeholder="Age" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                              </div>
+
+
+                              <div className="flex items-center space-x-2">
+                                <UserCog className="text-[#fff]" />
+                                <Select name="gender">
+                                  <SelectTrigger className="w-full bg-black border-gray-700 focus:border-[#7047eb]">
+                                    <SelectValue placeholder="Select Gender" />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-black border-gray-700">
+                                    <SelectItem value="Male">Male</SelectItem>
+                                    <SelectItem value="Female">Female</SelectItem>
+                                    <SelectItem value="Other">Other</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+
+                              <div className="flex items-center space-x-2">
+                                <MapPin className="text-[#fff]" />
+                                <Input name="location" placeholder="Location" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Droplet className="text-[#fff]" />
+                                <Select name="bloodGroup">
+                                  <SelectTrigger className="w-full bg-black border-gray-700 focus:border-[#7047eb]">
+                                    <SelectValue placeholder="Blood Group" />
+                                  </SelectTrigger>
+                                  <SelectContent className="bg-black border-gray-700">
+                                    {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map(group => (
+                                      <SelectItem key={group} value={group}>{group}</SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                              </div>
+
+
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Ruler className="text-[#fff]" />
+                                <Input name="height" type="number" placeholder="Height (in cms.)" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <Weight className="text-[#fff]" />
+                                <Input name="weight" type="number" placeholder="Weight (in kg.)" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className=' relative border border-slate-600 bg-[#160219a2] rounded-lg p-5'>
+                          <GridPattern
+        width={20}
+        height={20}
+        x={-1}
+        y={-1}
+        className={cn(
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] ",
+        )}
+      />
+                            <h1 className="text-4xl font-bold text-[#fff] mb-4 text-center">
+                              Medical History Section
+                        </h1>
+                        
+                            {medicalHistories.map((_, index) => (
+                              <div key={index} className="mb-6">
+                                <h3 className="text-2xl font-semibold mb-3 text-[#fff]">Medical History {index + 1}</h3>
+                                
+                                <div className="space-y-4 m-0 sm:m-10">
+                                  <div className="flex items-center space-x-2">
+                                    <Pill className="text-[#fff]" />
+                                    <Input name={`pharmacy${index}`} placeholder="Pharmacy" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+
+
+                                  <div className="flex items-center space-x-2">
+                                    <Stethoscope className="text-[#fff]" />
+                                    <Input name={`physician${index}`} placeholder="Physician" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <Calendar className="text-[#fff]" />
+                                    <Input name={`event${index}`} placeholder="Event" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <FileSymlink className="text-[#fff]" />
+                                    <Input name={`prescription${index}`} placeholder="Prescription" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <Pill className="text-[#fff]" />
+                                    <Input name={`remedies${index}`} placeholder="Remedies" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                  </div>
+                                </div>
+                                {index > 0 && (
+                                  <Button type="button" onClick={() => removeMedicalHistory(index)} className="mt-4 bg-black text-white border  hover:border-red-500 hover:bg-transparent">
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Remove Medical History
+                                  </Button>
+                                )}
+                              </div>
                             ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Ruler className="text-[#7047eb]" />
-                        <Input name="height" type="number" placeholder="Height (in cms.)" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Weight className="text-[#7047eb]" />
-                        <Input name="weight" type="number" placeholder="Weight (in kg.)" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    {medicalHistories.map((_, index) => (
-                      <div key={index} className="mb-4">
-                        <h3 className="text-lg font-semibold mb-3 text-[#7047eb]">Medical History {index + 1}</h3>
-                        <div className="space-y-3">
-                          <div className="flex items-center space-x-2">
-                            <Pill className="text-[#7047eb]" />
-                            <Input name={`pharmacy${index}`} placeholder="Pharmacy" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
+                            {medicalHistories.length < 5 && (
+                              <Button type="button" onClick={addMedicalHistory} className="mt-4 bg-black text-white border  hover:border-green-500 hover:bg-transparent">
+                                <Plus className="h-4 w-4 mr-2" />
+                                Add Medical History
+                              </Button>
+                            )}
+                            
+                           
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <Stethoscope className="text-[#7047eb]" />
-                            <Input name={`physician${index}`} placeholder="Physician" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Calendar className="text-[#7047eb]" />
-                            <Input name={`event${index}`} placeholder="Event" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <FileSymlink className="text-[#7047eb]" />
-                            <Input name={`prescription${index}`} placeholder="Prescription" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Pill className="text-[#7047eb]" />
-                            <Input name={`remedies${index}`} placeholder="Remedies" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                          </div>
-                        </div>
-                        {index > 0 && (
-                          <Button type="button" onClick={() => removeMedicalHistory(index)} className="mt-2 bg-red-500 hover:bg-red-600">
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Remove Medical History
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                    {medicalHistories.length < 5 && (
-                      <Button type="button" onClick={addMedicalHistory} className="mt-2 bg-green-500 hover:bg-green-600">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Medical History
-                      </Button>
-                    )}
-                    
-                    {testReports.map((_, index) => (
-                      <div key={index} className="mt-6">
-                        <h3 className="text-lg font-semibold mb-3 text-[#7047eb]">Test Report {index + 1}</h3>
-                        <div className="space-y-3">
-                          <div className="flex items-center space-x-2">
-                            <UserCog className="text-[#7047eb]" />
-                            <Input name={`doctor${index}`} placeholder="Doctor" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <FileSymlink className="text-[#7047eb]" />
-                            <Input name={`referredTo${index}`} placeholder="Referred to" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <FileTextIcon className="text-[#7047eb]" />
-                            <Input name={`type${index}`} placeholder="Type" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <FileText className="text-[#7047eb]" />
-                            <Input name={`comments${index}`} placeholder="Comments" className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Upload className="text-[#7047eb]" />
-                            <Input name={`files${index}`} type="file" multiple className="flex-grow bg-black border hover:bg-transparent hover:border-[#7047eb] transiton duration-200" />
+                          <div className='relative border border-slate-600 bg-[#0a0218a2] rounded-lg p-5'>
+                          <GridPattern
+        width={20}
+        height={20}
+        x={-1}
+        y={-1}
+        className={cn(
+          "[mask-image:linear-gradient(to_bottom_right,white,transparent,transparent)] ",
+        )}
+      />
+                          <h1 className="text-4xl font-bold text-[#fff] mb-4 text-center">
+                              Test Report Section
+                        </h1>
+                          {testReports.map((_, index) => (
+                              <div key={index} className="mt-6">
+                                <h3 className="text-lg font-semibold mb-3 text-[#fff]">Test Report {index + 1}</h3>
+                                <div className="space-y-4 m-0 sm:m-10">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                                  <div className="flex items-center space-x-2">
+                                    <UserCog className="text-[#fff]" />
+                                    <Input name={`doctor${index}`} placeholder="Doctor" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <FileSymlink className="text-[#fff]" />
+                                    <Input name={`referredTo${index}`} placeholder="Referred to" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <FileTextIcon className="text-[#fff]" />
+                                    <Input name={`type${index}`} placeholder="Type" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <FileText className="text-[#fff]" />
+                                    <Input name={`comments${index}`} placeholder="Comments" className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <Upload className="text-[#fff]" />
+                                    <Input name={`files${index}`} type="file" multiple className="flex-grow bg-black border-gray-700 focus:border-[#7047eb]" />
+                                  </div>
+                                </div>
+                                </div>
+                                {index > 0 && (
+                                  <Button type="button" onClick={() => removeTestReport(index)} className="mt-4 bg-black text-white border  hover:border-red-500 hover:bg-transparent">
+                                    <Trash2 className="h-4 w-4 mr-2" />
+                                    Remove Test Report
+                                  </Button>
+                                )}
+                              </div>
+                            ))}
+                            {testReports.length < 5 && (
+                              <Button type="button" onClick={addTestReport} className="mt-4 bg-black text-white border  hover:border-green-500 hover:bg-transparent">
+                                <Plus className="h-4 w-4 mr-2" />
+                                Add Test Report
+                              </Button>
+                            )}
                           </div>
                         </div>
-                        {index > 0 && (
-                          <Button type="button" onClick={() => removeTestReport(index)} className="mt-2 bg-red-500 hover:bg-red-600">
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Remove Test Report
+                        
+                        <div className="mt-6 flex justify-end space-x-4">
+                          <Button type="button" onClick={() => setIsOpen(false)} className="bg-gray-600 hover:bg-gray-700">
+                            Cancel
                           </Button>
-                        )}
-                      </div>
-                    ))}
-                    {testReports.length < 5 && (
-                      <Button type="button" onClick={addTestReport} className="mt-2 bg-green-500 hover:bg-green-600">
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Test Report
-                      </Button>
-                    )}
-                  </div>
+                          <Button type="submit" className="bg-black text-white border border-[#7047eb]  hover: hover:bg-[#7047eb]">
+                            Add Patient
+                          </Button>
+                        </div>
+                      </form>
+                    </HeadlessDialog.Panel>
+                  </Transition.Child>
                 </div>
-                
-                <Button type="submit" className="w-full border bg-[#7047eb] hover:bg-[#000] hover:border-[#7047eb] text-white">
-                  Add Patient
-                </Button>
-              </form>
-            </DialogContent>
-          </Dialog>
+              </div>
+            </HeadlessDialog>
+          </Transition>
+
+          <Button className="w-full md:w-auto bg-[#7047eb] border hover:bg-transparent hover:border-[#7047eb] text-white rounded-lg" onClick={() => setIsOpen(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Patient
+          </Button>
         </section>
 
         <div className='relative'>
