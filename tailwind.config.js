@@ -91,11 +91,11 @@ module.exports = {
   			grotesk: 'var(--font-grotesk)'
   		},
   		keyframes: {
-			"border-beam": {
-          		"100%": {
-            		"offset-distance": "100%",
-          		},
-        	},
+  			'border-beam': {
+  				'100%': {
+  					'offset-distance': '100%'
+  				}
+  			},
   			'accordion-down': {
   				from: {
   					height: '0'
@@ -120,32 +120,32 @@ module.exports = {
   					backgroundPosition: '-200% 0'
   				}
   			},
-			  spotlight: {
-				"0%": {
-				  opacity: 0,
-				  transform: "translate(-72%, -62%) scale(0.5)",
-				},
-				"100%": {
-				  opacity: 1,
-				  transform: "translate(-50%,-40%) scale(1)",
-				},
-			  },
-			  ripple: {
-				"0%, 100%": {
-				  transform: "translate(-50%, -50%) scale(1)",
-				},
-				"50%": {
-				  transform: "translate(-50%, -50%) scale(0.9)",
-				},
-			  },
+  			spotlight: {
+  				'0%': {
+  					opacity: '0',
+  					transform: 'translate(-72%, -62%) scale(0.5)'
+  				},
+  				'100%': {
+  					opacity: '1',
+  					transform: 'translate(-50%,-40%) scale(1)'
+  				}
+  			},
+  			ripple: {
+  				'0%, 100%': {
+  					transform: 'translate(-50%, -50%) scale(1)'
+  				},
+  				'50%': {
+  					transform: 'translate(-50%, -50%) scale(0.9)'
+  				}
+  			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			shimmer: 'shimmer 2s linear infinite',
-			spotlight: "spotlight 2s ease .75s 1 forwards",
-			"border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
-			ripple: "ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite",
+  			spotlight: 'spotlight 2s ease .75s 1 forwards',
+  			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
+  			ripple: 'ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite'
   		},
   		letterSpacing: {
   			tagline: '.15em'

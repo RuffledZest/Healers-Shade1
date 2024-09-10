@@ -12,6 +12,12 @@ import RetroGrid from "./magicui/retro-grid";
 import DotPattern from "./magicui/dot-pattern";
 import { cn } from "../lib/utils";
 import MobileAppSection from "./MobileAppSection";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion"
 
 export const CardSpotlightEffect1 = () => {
     const divRef = useRef<HTMLDivElement>(null);
@@ -72,12 +78,34 @@ export const CardSpotlightEffect1 = () => {
         {/* <HeroScrollDemo /> */}
         
        <MobileAppSection/>
+
+
        <p className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
+    FAQs
+  </p>  
+
+  <div className="w-auto flex justify-center sm:p-30">
+
+  <Accordion type="single" collapsible>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>
+      Yes. It adheres to the WAI-ARIA design pattern.
+    </AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2">
+    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+    <AccordionContent>
+      Yes. It adheres to the WAI-ARIA design pattern.
+    </AccordionContent>
+  </AccordionItem>
+</Accordion>
+  </div>
+
+  
+  <p className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
     That's Healers For You
-  </p>
-   
-        
-      
+  </p>   
         <BackgroundBoxesDemo/>
 
 
