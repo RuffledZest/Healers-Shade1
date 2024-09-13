@@ -15,6 +15,8 @@ import PatientDetails from "./components/PatientRecord1";
 import MedicalHistory from "./components/MedicalHistory";
 import TestReport from "./components/TestReport";
 import DoctorAppointments from "./pages/DoctorPages/AppointmentsPage/DoctorAppointments";
+import LoginSignup from "./pages/Login-Signup/Login-Signup";
+import Dashboard from "./pages/DashboardPage/Dashboard";
 
 
 function App() {
@@ -24,7 +26,16 @@ function App() {
       path: "/",
       element: <LandingPage />,
     },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
+    },
     // other pages....
+    {
+      path: "/login-signup",
+      element: <LoginSignup />,
+
+    },
     {
       path: "/health-records",
       element: <Ehr />,
