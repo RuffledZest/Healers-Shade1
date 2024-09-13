@@ -38,15 +38,12 @@ export function AnimatedPinDemo() {
                             </div>
                         </div>
       
-    <Link 
-    to = "/health-records"
-    >
+   
 
       
     <div className="h-[24rem] w-full flex items-center justify-center ">
-
       <PinContainer
-        title="Health Record"
+        title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio ut magnam provident eum voluptates cumque. Quam asperiores iure"
         href="https://twitter.com/mannupaaji"
       >
         <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
@@ -65,16 +62,15 @@ export function AnimatedPinDemo() {
       </PinContainer>
       
     </div>
-    </Link>
+   
 
 
 
-    <Link
-    to = "/doctor-dashboard">
+   
 
     <div className="h-[24rem] w-full flex items-center justify-center ">
       <PinContainer
-        title="Doctor Dashboard"
+        title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio ut magnam provident eum voluptates cumque. Quam asperiores iure"
         href="https://twitter.com/mannupaaji"
       >
         <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
@@ -93,17 +89,15 @@ export function AnimatedPinDemo() {
       </PinContainer>
       
     </div>
-    </Link>
+ 
 
 
 
-    <Link
-    to = "/appointments">
-
+    
 
     <div className="h-[24rem] w-full flex items-center justify-center ">
       <PinContainer
-        title="Appointments"
+        title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio ut magnam provident eum voluptates cumque. Quam asperiores iure"
         href="https://twitter.com/mannupaaji"
       >
         <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
@@ -121,17 +115,14 @@ export function AnimatedPinDemo() {
       </PinContainer>
       
     </div>
-    </Link>
+   
 
 
-
-    <Link
-    to = "/inventory">
-
+    
 
     <div className="h-[24rem] w-full flex items-center justify-center ">
       <PinContainer
-        title="Inventory"
+        title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio ut magnam provident eum voluptates cumque. Quam asperiores iure"
         href="https://twitter.com/mannupaaji"
       >
         <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
@@ -150,7 +141,7 @@ export function AnimatedPinDemo() {
       
     </div>
 
-    </Link>
+ 
       
       </div>
     </div>

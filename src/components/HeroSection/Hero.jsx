@@ -64,6 +64,7 @@ const HeaderWords = [
   ];
 
 import { useTheme } from '../../components/ThemeProvider/theme-provider';
+import { Link } from "react-router-dom";
 const Hero = () => {
     const parallaxRef = useRef(null);
     const words = `Lorem ipsum dolor sit amet consectetur adipisicing elit. 
@@ -89,10 +90,12 @@ const Hero = () => {
             <div className="rotate-[30deg]">
 
             <AbstractIcon className="z-20"/>
+            
             </div>
             </div>
 
         </ScrollParallax>
+        
       </div>
             <div className="subContainer" >
 
@@ -196,8 +199,11 @@ const Hero = () => {
                         text-7xl font-bold bg-gradient-to-r from-[#9029c1] via-[#00e7ea] to-[#5079d8] inline-block text-transparent drop-shadow-2xl bg-clip-text">Healthcare</h1>
                         </div>                         
                         </div> */}
+                        <div className="z-0 opacity-15">
+
                         <img src="/HealersHealthcareOfficialLogo.png" alt="HealersLogoHero"
-                        className="CompanyLogo object-cover hidden xl:flex w-[800px] h-[240px]"/>
+                        className=" CompanyLogo object-cover hidden xl:flex w-[800px] h-[240px]"/>
+                        </div>
                     </div>
                 </div>
 
@@ -211,12 +217,14 @@ const Hero = () => {
                     </button> 
                     </Tooltip>
                     <Tooltip title="Coming Soon" position="top" content="Lorem ipsum dolor sit amet consectetur adipisicing elit.">
+                        <Link to="/login-signup">
                             <button className="z-20 relative inline-flex h-12  overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 transform hover:-translate-y-1 transition duration-400">
                         <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
                         <span className="text-white inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#000000] px-3 py-1 text- font-medium backdrop-blur-3xl ">
                             Login as a Hospital 
                         </span>
                     </button>
+                        </Link>
                     </Tooltip>
 
                      

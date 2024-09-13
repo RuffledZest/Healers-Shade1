@@ -5,6 +5,7 @@ import { cn } from "../lib/utils";
 import LetterPullup from "./magicui/letter-pullup";
 import { Apple, LucideApple } from "lucide-react";
 import SparklesText from "./magicui/sparkles-text";
+import { motion } from 'framer-motion';
 
 
 
@@ -52,16 +53,41 @@ export default function MobileAppSection() {
 
 
   
-  <div className="relative  flex gap-2">
+  <div className="relative  flex gap-2 mx-auto">
+
+  <motion.div className="z-[12]"
+      animate={{
+        y: [0, -20, 0], // Moves up 20px and then back to the original position
+      }}
+      transition={{
+        duration: 3, // Duration of the up and down motion
+        repeat: Infinity, // Repeat indefinitely
+        ease: 'easeInOut', // Smooth easing
+      }}
+    >
+ {/* Your component goes here */}
   <Iphone15Pro
     className="size-[300px] md:size-[390px] lg:size-[390px] xl:size-[390px] 2xl:size-[390px] z-[12] "
     src="/mobileAppImg.jpg"
   />
-  
+    </motion.div>
+
+    <motion.div className="absolute z-[11]"
+      animate={{
+        y: [0, -15, 0], // Moves up 20px and then back to the original position
+      }}
+      transition={{
+        duration: 3, // Duration of the up and down motion
+        repeat: Infinity, // Repeat indefinitely
+        ease: 'easeInOut', // Smooth easing
+      }}
+    >
   <Iphone15Pro
-    className="absolute rotate-[340deg] md:rotate-[320deg] z-[11] -translate-x-10 md:-translate-x-20 translate-y-5 md:translate-y-10 size-[300px] md:size-[380px] lg:size-[380px] xl:size-[380px] 2xl:size-[380px] "
+    className="absolute rotate-[340deg] md:rotate-[320deg]  -translate-x-10 md:-translate-x-20 translate-y-5 md:translate-y-10 size-[300px] md:size-[380px] lg:size-[380px] xl:size-[380px] 2xl:size-[380px] "
     src="/mobileAppImg.jpg"
   />
+    </motion.div>
+  
 </div>
   
   </div>
