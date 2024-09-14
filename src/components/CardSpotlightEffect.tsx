@@ -77,7 +77,7 @@ export const CardSpotlightEffect1 = () => {
        <MobileAppSection/>
 
 
-       <p className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
+       <p id="faq" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
     FAQs
   </p>  
 

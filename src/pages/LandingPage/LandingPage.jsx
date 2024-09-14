@@ -7,6 +7,7 @@ import Hero from '../../components/HeroSection/Hero';
 // import { AnimatedPinDemo } from '../../components/3dPinReal';
 // import { BackgroundBoxesDemo } from '../../components/BackgroundBoxes';
 import { CardSpotlightEffect1 } from '../../components/CardSpotlightEffect';
+
 // import { BackgroundBoxesDemo } from '../../components/BackgroundBoxes';
 // import { HeroScrollDemo } from '../../components/ScrollHero';
 // import { AnimatedPinDemo } from '../../components/3dPinReal';
@@ -23,6 +24,7 @@ import { NavbarDemo } from '../../components/Navbar/Navbar2';
 
 
     import { useTheme } from '../../components/ThemeProvider/theme-provider';
+import { NavigationMenuNew } from '../../components/Navbar/Navbar3';
 function LandingPage() {
     const { theme } = useTheme();
 
@@ -38,7 +40,8 @@ function LandingPage() {
          
     
          }}> */}
-          <NavbarDemo/>
+          {/* <NavbarDemo/> */}
+          <NavigationMenuNew/>
           <Hero/>
       
         {/* </section> */}

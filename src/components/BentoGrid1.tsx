@@ -10,22 +10,37 @@ import {
   IconTableColumn,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
+import { VelocityScroll } from "./magicui/scroll-based-velocity";
 // import Image from "next/image";
 
 export function BentoGridThirdDemo() {
   return (
-    <BentoGrid className=" max-w-7xl mx-auto my-32 md:auto-rows-[20rem]">
+    <>
+    <p id="features" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
+    Feature Out of the Blue
+  </p> 
+    <BentoGrid className=" max-w-7xl mx-auto mt-32 md:auto-rows-[20rem] ">
       {items.map((item, i) => (
         <BentoGridItem
           key={i}
           title={item.title}
           description={item.description}
           header={item.header}
-          className={cn("[&>p:text-lg]", item.className)}
+          className={cn("[&>p:text-lg] z-20", item.className)}
           icon={item.icon}
         />
       ))}
     </BentoGrid>
+    <div className="z-10 rotate-6">
+
+            <VelocityScroll
+            text="Wait We Have More"
+            default_velocity={1}
+            
+            className=" font-display text-center text-4xl font-bold tracking-[-0.02em] text-black/70 drop-shadow-sm dark:text-white/30 md:text-7xl md:leading-[5rem]"
+          />
+        </div>
+    </>
   );
 }
 
