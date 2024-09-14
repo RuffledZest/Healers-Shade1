@@ -65,6 +65,8 @@ const HeaderWords = [
 
 import { useTheme } from '../../components/ThemeProvider/theme-provider';
 import { Link } from "react-router-dom";
+import { BackgroundLines } from "../ui/background-lines";
+import HyperText from "../magicui/hyper-text";
 const Hero = () => {
     const parallaxRef = useRef(null);
     const words = `Lorem ipsum dolor sit amet consectetur adipisicing elit. 
@@ -74,8 +76,9 @@ const Hero = () => {
 
     const dark = theme === 'dark';
     return (
-
+        
         <Section className="" crosses crossesOffset="lg:translate-y-[5.25rem]" customPaddings id="hero">
+            <BackgroundLines className="">
             <div className="h-[60rem] sm:h-[60rem] w-full rounded-md flex md:items-center md:justify-center bg-transparent dark:bg-black/[0.80] antialiased bg-grid-white/[0.02] relative overflow-hidden">
       <Spotlight
         className="-top-90 sm:-top-40 left-0 md:left-60 md:-top-20"
@@ -205,6 +208,13 @@ const Hero = () => {
                         className=" CompanyLogo object-cover hidden xl:flex w-[800px] h-[240px]"/>
                         </div>
                     </div>
+                    <div className="w-full flex justify-center mt-20 ">
+
+                <HyperText 
+      className="text-2xl font-bold text-black dark:text-white"
+      text="Join Our Growing Network"
+    />
+                    </div>
                 </div>
 
                 <div className="bottomButtonsSticky fixed inset-0 top-auto  w-full z-50 flex justify-around mb-10">
@@ -297,6 +307,7 @@ const Hero = () => {
                 </div> */}
 
                                             
+        </BackgroundLines>
         </Section>
     );
 };
