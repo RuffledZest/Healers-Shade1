@@ -3,7 +3,7 @@
 import { PinContainer } from "../components/ui/3d-pin";
 import Heading from "../components/Heading/Heading"
 
-import {Link} from "react-router-dom";
+// import {Link} from "react-router-dom";
 import Section from "./Section/Section";
 import { gradient } from "../assets";
 
@@ -46,7 +46,7 @@ export function AnimatedPinDemo() {
         title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio ut magnam provident eum voluptates cumque. Quam asperiores iure"
         href="https://twitter.com/mannupaaji"
       >
-        <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
+        <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[18rem] h-[18rem] ">
           <h3 className="max-w-xs !pb-2 !m-0 font-bold  text-base text-slate-100">
             Health Records
           </h3>
@@ -73,7 +73,7 @@ export function AnimatedPinDemo() {
         title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio ut magnam provident eum voluptates cumque. Quam asperiores iure"
         href="https://twitter.com/mannupaaji"
       >
-        <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
+        <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[18rem] h-[18rem] ">
           <h3 className="max-w-xs !pb-2 !m-0 font-bold  text-base text-slate-100">
             Doctor Dashboard
           </h3>
@@ -100,7 +100,7 @@ export function AnimatedPinDemo() {
         title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio ut magnam provident eum voluptates cumque. Quam asperiores iure"
         href="https://twitter.com/mannupaaji"
       >
-        <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
+        <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[18rem] h-[18rem] ">
           <h3 className="max-w-xs !pb-2 !m-0 font-bold  text-base text-slate-100">
             Appointments
           </h3>
@@ -125,7 +125,7 @@ export function AnimatedPinDemo() {
         title="Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio ut magnam provident eum voluptates cumque. Quam asperiores iure"
         href="https://twitter.com/mannupaaji"
       >
-        <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[20rem] h-[20rem] ">
+        <div className="flex basis-full flex-col p-4 tracking-tight text-slate-100/50 sm:basis-1/2 w-[18rem] h-[18rem] ">
           <h3 className="max-w-xs !pb-2 !m-0 font-bold  text-base text-slate-100">
           Inventory
           </h3>

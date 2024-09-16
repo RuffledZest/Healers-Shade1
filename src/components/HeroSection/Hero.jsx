@@ -9,7 +9,7 @@ import { cn } from "../../lib/utils";
 // import PlusSvg from "../../assets/svg/PlusSvg";
 // import PropTypes from "prop-types";
 // import Video from "../Video";
-import { gradient} from "../../assets";
+import { gradient, yourlogo} from "../../assets";
 // import Lottie from 'react-lottie';
 // import animationData1 from '../../lotties/medicalIcon1.json';
 import {Tooltip} from "flowbite-react";
@@ -37,11 +37,11 @@ import { AbstractIcon } from "../Icons";
 const HeaderWords = [
     {
       text: "Treatment",
-      className: "text-[#744de1] dark:text-[#744de1]",
+      className: "text-black dark:text-[#c4c3c3]",
     },
     {
       text: "With",
-      className: "text-black dark:text-white",
+      className: "text-black dark:text-[#c4c3c3]",
     },
     
    
@@ -50,11 +50,11 @@ const HeaderWords = [
   const HeaderWords2 = [
     {
         text: "The",
-        className: "text-black dark:text-white",
+        className: "text-black dark:text-[#c4c3c3]",
       },
     {
       text: "Best",
-      className: "text-black dark:text-white",
+      className: "text-black dark:text-[#c4c3c3]",
     },
     {
       text: "Doctor",
@@ -67,9 +67,10 @@ import { useTheme } from '../../components/ThemeProvider/theme-provider';
 import { Link } from "react-router-dom";
 import { BackgroundLines } from "../ui/background-lines";
 import HyperText from "../magicui/hyper-text";
+import NumberTicker from "../magicui/number-ticker";
 const Hero = () => {
     const parallaxRef = useRef(null);
-    const words = `Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+    const words = `The Best Doctor is the one who treats the patient not the disease 
 `;
     
     const { theme } = useTheme();
@@ -84,15 +85,15 @@ const Hero = () => {
         className="-top-90 sm:-top-40 left-0 md:left-60 md:-top-20"
         fill={dark? "#fff" : "#000"}
       />
-      <div className="absolute">
+      <div className="absolute w-full">
 
-        <ScrollParallax>
-            <div className="flex">
+        <ScrollParallax className="w-full ">
+            <div className="flex -ml-40">
 
-            <AbstractIcon className="z-20"/>
+            <AbstractIcon className="z-20 -ml-20"/>
             <div className="rotate-[30deg]">
 
-            <AbstractIcon className="z-20"/>
+            
             
             </div>
             </div>
@@ -153,7 +154,7 @@ const Hero = () => {
                 )}
             
             <div className="container relative" ref={parallaxRef}>
-                <div className="relative z-1 top-20 max-w-full mb-[3.875rem] md:mb-20 lg:mb-[18.25rem] lg:mt-[1.25rem]">
+                <div className="relative z-1 top-20 sm:top-40  max-w-full mb-[3.875rem] md:mb-20 lg:mb-[18.25rem] lg:mt-[1.25rem]">
                     {/* <h1 className="h1 mb-6 mt-10">
                         <span className="text-green-500">
                         Treatment {` `}
@@ -168,7 +169,7 @@ const Hero = () => {
                     </h1> */}
                     
                     
-                    <div className="HeroTitleAndSubTitle  w-full flex  justify-around ">
+                    <div className="HeroTitleAndSubTitle  w-full flex  justify-around items-center ">
 
                         
 
@@ -208,12 +209,29 @@ const Hero = () => {
                         className=" CompanyLogo object-cover hidden xl:flex w-[800px] h-[240px]"/>
                         </div>
                     </div>
-                    <div className="w-full flex justify-center mt-20 ">
+                    <div className="w-full flex justify-center lg:justify-end mt-20  ">
+                
+                <div className="flex flex-col gap-2 bg-[#c4c4c492] dark:bg-[#1a1a1a92] p-5 rounded-lg">
 
                 <HyperText 
-      className="text-2xl font-bold text-black dark:text-white"
-      text="Join Our Growing Network"
+      className="text-xl font-bold text-black dark:text-white -mb-3"
+      text="Join Our Comunity"
     />
+    <div className="flex gap-2">
+        
+    <NumberTicker value={10000} />
+    <p>{` `}Joins</p>
+    </div>
+    <HyperText 
+      className="text-xl font-bold text-black dark:text-white -mb-3"
+      text="Our Branch"
+    />
+   <div className="flex gap-2">
+        
+        <NumberTicker value={100} />
+        <p>{` `}Connections</p>
+        </div>
+                </div>
                     </div>
                 </div>
 
@@ -230,7 +248,7 @@ const Hero = () => {
                         <Link to="/login-signup">
                             <button className="z-20 relative inline-flex h-12  overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 transform hover:-translate-y-1 transition duration-400">
                         <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-                        <span className="text-white inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#000000] px-3 py-1 text- font-medium backdrop-blur-3xl ">
+                        <span className="text-[#c4c3c3] inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#000000] px-3 py-1 text- font-medium backdrop-blur-3xl ">
                             Login as a Hospital 
                         </span>
                     </button>
@@ -287,8 +305,8 @@ const Hero = () => {
             </div>
     </div>
 
-
-                {/* <div className="hidden relative z-10 mt-20 lg:block">
+{/* 
+                <div className="hidden relative z-10 mt-20 lg:block">
                     <h5 className="tagline mb-6 text-center text-white/50">Helping people create beautiful content at</h5>
                     <ul className="flex">
                         <li className="flex items-center justify-center flex-1 h-[8.5rem]">
