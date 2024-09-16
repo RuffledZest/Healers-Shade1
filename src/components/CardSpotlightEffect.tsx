@@ -118,19 +118,19 @@ export const CardSpotlightEffect1 = () => {
 
          
   
-  <p className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
+  <p id="contactUs" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
     That's Healers For You
   </p>   
         <BackgroundBoxesDemo/>
 
 
+      </TracingBeam>
         <Footer/>
 
 
         
         
         
-      </TracingBeam>
       </div>
     );
   };

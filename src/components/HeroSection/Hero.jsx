@@ -2,9 +2,9 @@
 // import { curve, loading, yourlogo } from "../../assets";
 // import Button from "../Buttons/Button";
 import Section from "../Section/Section";
-import { MouseParallax, ScrollParallax} from "react-just-parallax";
+import { ScrollParallax} from "react-just-parallax";
 import {useRef} from "react";
-import { cn } from "../../lib/utils";
+// import { cn } from "../../lib/utils";
 // import Notification from "../Notification/Notification";
 // import PlusSvg from "../../assets/svg/PlusSvg";
 // import PropTypes from "prop-types";
@@ -80,25 +80,27 @@ const Hero = () => {
         
         <Section className="" crosses crossesOffset="lg:translate-y-[5.25rem]" customPaddings id="hero">
             <BackgroundLines className="">
+                
             <div className="h-[60rem] sm:h-[60rem] w-full rounded-md flex md:items-center md:justify-center bg-transparent dark:bg-black/[0.80] antialiased bg-grid-white/[0.02] relative overflow-hidden">
       <Spotlight
         className="-top-90 sm:-top-40 left-0 md:left-60 md:-top-20"
         fill={dark? "#fff" : "#000"}
       />
-      <div className="absolute w-full">
+      {/* <div className="absolute translate-x-[28rem] -translate-y-[5rem]  rotate-[285deg] z-5">
+            <img alt="dna" src="/dna2.png " className=" opacity-100 w-[80%] z-20" />
+            </div> */}
+      <div className="absolute w-full flex justify-end items-end">
+      
 
         <ScrollParallax className="w-full ">
             <div className="flex -ml-40">
 
             <AbstractIcon className="z-20 -ml-20"/>
-            <div className="rotate-[30deg]">
 
-            
-            
-            </div>
             </div>
 
         </ScrollParallax>
+            
         
       </div>
             <div className="subContainer" >
@@ -203,21 +205,28 @@ const Hero = () => {
                         text-7xl font-bold bg-gradient-to-r from-[#9029c1] via-[#00e7ea] to-[#5079d8] inline-block text-transparent drop-shadow-2xl bg-clip-text">Healthcare</h1>
                         </div>                         
                         </div> */}
-                        <div className="z-0 opacity-15">
+                        <div className="z-0 opacity-40 dark:opacity-15">
 
                         <img src="/HealersHealthcareOfficialLogo.png" alt="HealersLogoHero"
                         className=" CompanyLogo object-cover hidden xl:flex w-[800px] h-[240px]"/>
                         </div>
                     </div>
-                    <div className="w-full flex justify-center lg:justify-end mt-20  ">
+
+
+
+                    <ScrollParallax className="w-full ">
+           
+
+        
+                    <div className="w-full flex justify-center lg:justify-end mt-15 sm:-mt-10  ">
                 
-                <div className="flex flex-col gap-2 bg-[#c4c4c492] dark:bg-[#1a1a1a92] p-5 rounded-lg">
+                <div className="flex flex-col gap-2 bg-[#c4c4c492] dark:bg-[#1a1a1a92] p-5 rounded-lg hover:scale-105 transition duration-300">
 
                 <HyperText 
       className="text-xl font-bold text-black dark:text-white -mb-3"
       text="Join Our Comunity"
     />
-    <div className="flex gap-2">
+    <div className="flex gap-2 ">
         
     <NumberTicker value={10000} />
     <p>{` `}Joins</p>
@@ -233,6 +242,9 @@ const Hero = () => {
         </div>
                 </div>
                     </div>
+                    </ScrollParallax>
+
+
                 </div>
 
                 <div className="bottomButtonsSticky fixed inset-0 top-auto  w-full z-50 flex justify-around mb-10">
