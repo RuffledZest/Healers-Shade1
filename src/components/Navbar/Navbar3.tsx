@@ -60,7 +60,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export function NavigationMenuNew() {
   return (
-    <div className=" w-full  flex fixed justify-between z-50 px-10">
+    <div className=" w-full flex fixed justify-between z-50 px-10 bg-transparent backdrop-blur-lg">
         <div className="hidden lg:flex justify-between items-center gap-4 logo bg-transparent px-6 py-3 rounded-full">
         <HoveredLink href="/">
         <img src={'/HealersHealthcareOfficialLogo.png'} alt="Healers Healthcare" className="w-40 mx-auto" />
@@ -72,7 +72,7 @@ export function NavigationMenuNew() {
         <NavigationMenuItem>
           <NavigationMenuTrigger>Getting started</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+            <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr] ">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <a
@@ -129,12 +129,13 @@ export function NavigationMenuNew() {
           {/* </Link> */}
         </NavigationMenuItem>
         <NavigationMenuItem>
-          {/* <Link href="/docs" legacyBehavior passHref> */}
+      
           
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
+            <ScrollTo to="contactUs" >Contact Us</ScrollTo>
+              
             </NavigationMenuLink>
-          {/* </Link> */}
+
         </NavigationMenuItem>
         <NavigationMenuItem>
           {/* <Link href="/docs" legacyBehavior passHref> */}
