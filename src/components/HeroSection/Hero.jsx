@@ -205,10 +205,10 @@ const Hero = () => {
                         text-7xl font-bold bg-gradient-to-r from-[#9029c1] via-[#00e7ea] to-[#5079d8] inline-block text-transparent drop-shadow-2xl bg-clip-text">Healthcare</h1>
                         </div>                         
                         </div> */}
-                        <div className="z-0 opacity-40 dark:opacity-15">
+                        <div className="z-0 opacity-40 dark:opacity-100">
 
                         <img src="/HealersHealthcareOfficialLogo.png" alt="HealersLogoHero"
-                        className=" CompanyLogo object-cover hidden xl:flex w-[800px] h-[240px]"/>
+                        className=" CompanyLogo object-cover hidden xl:flex w-[800px] h-[240px] hover:scale-110 transition duration-300"/>
                         </div>
                     </div>
 
