@@ -12,21 +12,21 @@ import { motion } from 'framer-motion';
 export default function MobileAppSection() {
   return (
     <>
-    <p className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
+    <p id="downloadMobileApp" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-3xl sm:text-5xl font-medium tracking-tighter text-black dark:text-white">
     Download Our Mobile App
   </p>
     <section className="flex justify-center items-center mb-80 mx-10 md:mx-32 ">
           
-    <div className="relative flex h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-[#cccccb] dark:bg-[#0b0213] md:shadow-xl">
+    <div className="relative flex h-[500px] md:h-[700px] lg:h-[500px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-[#cccccb] dark:bg-[#0b0213] md:shadow-xl">
   
-  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-32 ">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-32 ">
 
     <div className="flex flex-col  justify-center">
 
       
 
   
-    <SparklesText text="Healers Mobile App" className="text-center" />
+    <SparklesText text="Healers Mobile App" className="text-center mt-10 md:mt-2 " />
   <p className="  z-10 whitespace-pre-wrap text-center self-center text-xl font-medium tracking-tighter text-black dark:text-white">
     Get the best experience on the go
   </p>

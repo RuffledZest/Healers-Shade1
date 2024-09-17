@@ -17,8 +17,8 @@ export async function TweetDemo() {
 export function BentoGridThirdDemo() {
   return (
     <>
-    <p id="features" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
-    Feature Out of the Blue
+    <p id="" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-3xl sm:text-5xl font-medium tracking-tighter text-black dark:text-white">
+    The More You Can Do With Healers
   </p> 
     <BentoGrid className=" max-w-7xl mx-auto mt-32 md:auto-rows-[20rem] ">
       {items.map((item, i) => (
