@@ -187,7 +187,7 @@ return (
         
       }}
       className={cn(
-        "block rounded-sm w-[4px]  h-4 sm:h-6 xl:h-12 bg-blue-500",
+        "block rounded-sm w-[4px]  h-4 sm:h-6 xl:h-12 bg-transparent",
         cursorClassName
       )}
     ></motion.span>

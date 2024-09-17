@@ -88,6 +88,9 @@ export const CardSpotlightEffect1 = () => {
 
 
         <div className="py-20">
+        <p id="features" className="mt-16 mb-16 z-10 whitespace-pre-wrap text-center text-3xl sm:text-5xl font-medium tracking-tighter text-black dark:text-white">
+    The Features Out of the Blue
+  </p> 
       
         <Features3 />
     </div>
@@ -96,15 +99,18 @@ export const CardSpotlightEffect1 = () => {
         <BentoGridThirdDemo />
         </motion.div>
 
-        <AnimatedPinDemo />
+        {/* <AnimatedPinDemo /> */}
         {/* <HeroScrollDemo /> */}
+        <p id="aboutUs" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-3xl sm:text-5xl font-medium tracking-tighter text-black dark:text-white">
+    Your Healthcare Management Companion 
+  </p> 
         
   <BentoGrid2/>
        <MobileAppSection/>
 
 
-       <p id="faq" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
-    FAQs
+       <p id="faq" className="mt-36 mb-10 sm:mb-20 z-10 whitespace-pre-wrap text-center text-3xl sm:text-5xl font-medium tracking-tighter text-black dark:text-white">
+    Frequently Asked Questions
   </p>  
 
 
@@ -118,14 +124,14 @@ export const CardSpotlightEffect1 = () => {
 
          
   
-  <p id="contactUs" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-5xl font-medium tracking-tighter text-black dark:text-white">
+  <p id="contactUs" className="mt-36 mb-10 z-10 whitespace-pre-wrap text-center text-3xl sm:text-5xl font-medium tracking-tighter text-black dark:text-white">
     That's Healers For You
   </p>   
         <BackgroundBoxesDemo/>
 
 
       </TracingBeam>
-        <Footer/>
+      <Footer/>
 
 
         
